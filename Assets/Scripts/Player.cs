@@ -1,23 +1,44 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
+    public float lookAtMouseDuration = 2f; // Tiempo en segundos que el personaje mirará al mouse
+
     private Rigidbody2D rb;
-    private Animator animator;
-    private bool facingRight = true;
+    private SpriteRenderer spriteRenderer;
+    private bool isLookingAtMouse = false;
+    private float lookTimer = 0f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
         Movement();
-        HandleAnimation();
-        FlipBasedOnMousePosition();
+
+        if (Input.GetMouseButtonDown(0)) // 0 es el botón izquierdo del mouse
+        {
+            StartLookingAtMouse();
+        }
+
+        if (isLookingAtMouse)
+        {
+            LookAtMouse();
+            lookTimer += Time.deltaTime;
+
+            if (lookTimer >= lookAtMouseDuration)
+            {
+                StopLookingAtMouse();
+            }
+        }
+        else
+        {
+            FlipX(); // Volver a la lógica normal de voltear en el eje X
+        }
     }
 
     void Movement()
@@ -28,32 +49,41 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = moveDirection * moveSpeed;
     }
 
-    void HandleAnimation()
+    void FlipX()
     {
-        bool isMoving = rb.linearVelocity.magnitude > 0.1f;
-        animator.SetBool("isWalking", isMoving);
+        float moveX = Input.GetAxisRaw("Horizontal");
+
+        if (moveX > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if (moveX < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
     }
 
-    void FlipBasedOnMousePosition()
+    void StartLookingAtMouse()
     {
-        // Obtener la posici�n del mouse en el mundo
+        isLookingAtMouse = true;
+        lookTimer = 0f;
+    }
+
+    void LookAtMouse()
+    {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        // Determinar si el mouse est� a la izquierda o derecha del personaje
-        if (mousePosition.x < transform.position.x && facingRight)
+        if (mousePosition.x > transform.position.x)
         {
-            Flip();
+            spriteRenderer.flipX = false; // Mirar a la derecha
         }
-        else if (mousePosition.x > transform.position.x && !facingRight)
+        else
         {
-            Flip();
+            spriteRenderer.flipX = true; // Mirar a la izquierda
         }
     }
 
-    void Flip()
+    void StopLookingAtMouse()
     {
-        // Cambiar la direcci�n del personaje
-        facingRight = !facingRight;
-        transform.localScale = new Vector3(facingRight ? 1 : -1, 1, 1);
+        isLookingAtMouse = false;
     }
 }

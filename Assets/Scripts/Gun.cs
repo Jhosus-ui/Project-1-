@@ -8,7 +8,7 @@ public class ArmaMovimiento : MonoBehaviour
 
     public new Camera camera;
     public Transform spawner;
-    public GameObject balaPrefab; 
+    public GameObject balaPrefab;
 
     void Start()
     {
@@ -36,7 +36,7 @@ public class ArmaMovimiento : MonoBehaviour
         }
         else if (Input.GetButtonDown("Fire1") && AmmoManager.Instance.currentAmmo <= 0)
         {
-            Debug.Log("No hay balas disponibles."); 
+            Debug.Log("No hay balas disponibles.");
         }
     }
 
