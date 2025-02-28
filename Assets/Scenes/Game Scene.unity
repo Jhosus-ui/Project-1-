@@ -2409,7 +2409,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: bfdb60e7e48be9440828a84583d709ee, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -11225,6 +11225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 3
+  currentHealth: 0
 --- !u!70 &621839909
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -48050,6 +48051,8 @@ MonoBehaviour:
   minSpawnInterval: 2
   maxSpawnInterval: 5
   startDelay: 10
+  vidaMinimaEnemigo: 1
+  vidaMaximaEnemigo: 3
 --- !u!114 &2025043299
 MonoBehaviour:
   m_ObjectHideFlags: 0

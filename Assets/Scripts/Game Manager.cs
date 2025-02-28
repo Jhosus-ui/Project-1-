@@ -37,6 +37,14 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
     private bool isTimeUp = false;
+    // Variables para la vida del enemigo
+    public int vidaMinimaEnemigo = 1;
+    public int vidaMaximaEnemigo = 3;
+
+    // Métodos para obtener la vida mínima y máxima del enemigo
+    public int GetVidaMinimaEnemigo() => vidaMinimaEnemigo;
+    public int GetVidaMaximaEnemigo() => vidaMaximaEnemigo;
+
     void Start()
     {
         tiempoRestante = tiempoInicial;

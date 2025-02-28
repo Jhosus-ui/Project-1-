@@ -7,8 +7,10 @@ public class Enemy : MonoBehaviour
     private GameObject player;
     private SpriteRenderer spriteRenderer; // Para manejar el flip X
 
-    public int maxHealth = 3;
-    private int currentHealth;
+    // Variables de vida (ahora públicas para configurar el rango)
+    public int minHealth = 1; // Vida mínima del enemigo
+    public int maxHealth = 3; // Vida máxima del enemigo
+    public int currentHealth; // Vida actual del enemigo
 
     void Start()
     {
@@ -16,10 +18,12 @@ public class Enemy : MonoBehaviour
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         player = GameObject.FindWithTag("Player");
-        currentHealth = maxHealth;
 
         // Obtener el componente SpriteRenderer para manejar el flip X
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        // Inicializar la vida del enemigo con un valor aleatorio dentro del rango
+        InicializarVida();
     }
 
     void Update()
@@ -55,6 +59,14 @@ public class Enemy : MonoBehaviour
             }
             // Si están en la misma posición en X, no hacer nada (mantener el último flip)
         }
+    }
+
+    // Método para inicializar la vida del enemigo con un valor aleatorio dentro del rango
+    void InicializarVida()
+    {
+        // Asignar una vida aleatoria dentro del rango [minHealth, maxHealth]
+        currentHealth = Random.Range(minHealth, maxHealth + 1); // +1 para incluir el valor máximo
+        Debug.Log($"Enemigo generado con {currentHealth} de vida.");
     }
 
     public void TakeDamage(int damageAmount)
