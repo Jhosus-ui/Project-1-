@@ -1,14 +1,26 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class AmmoManager : MonoBehaviour
 {
-    public static AmmoManager Instance; 
+    public static AmmoManager Instance;
 
-    public int currentAmmo = 10; 
-    public int maxAmmo = 30;
-    public int regenerationLimit = 30; 
-    public TextMeshProUGUI ammoText;
+    public int currentAmmo = 10; // Balas en el cartucho actual
+    public int maxAmmoPerMagazine = 10; // Máximo de balas por cartucho
+    public int totalAmmo = 30; // Balas totales disponibles
+    public int maxTotalAmmo = 30; // Máximo de balas totales
+    public int regenerationLimit = 30; // Límite de regeneración de balas
+    public float timeBetweenShots = 0.5f; // Tiempo entre disparos
+
+    public TextMeshProUGUI totalAmmoText; // Texto para balas totales
+    public TextMeshProUGUI magazinesText; // Texto para cartuchos
+    public Image[] bulletImages; // Imágenes de las balas en el cartucho (10 imágenes)
+
+    private bool isReloading = false;
+    private float lastShotTime = 0f;
+
+    private Animator animator;
 
     private void Awake()
     {
@@ -24,41 +36,130 @@ public class AmmoManager : MonoBehaviour
 
     private void Start()
     {
-        UpdateAmmoUI();
+        animator = GetComponent<Animator>();
+        UpdateUI();
     }
 
-    // Método para gastar una bala
-    public void UseAmmo()
+    private void Update()
     {
-        if (currentAmmo > 0)
+        HandleInput();
+        HandleReload();
+    }
+
+    private void HandleInput()
+    {
+        if (Input.GetKeyDown(KeyCode.R)) // Recargar con la tecla "R"
         {
-            currentAmmo--;
-            UpdateAmmoUI();
+            TryReload();
         }
     }
 
-    // Método para agregar balas
+    private void HandleReload()
+    {
+        if (isReloading)
+        {
+            // Aquí puedes manejar la lógica de la animación de recarga
+            // Por ejemplo, esperar a que termine la animación antes de actualizar las balas
+        }
+    }
+
+    // Método para disparar
+    public void Shoot()
+    {
+        if (Time.time - lastShotTime < timeBetweenShots || isReloading || currentAmmo <= 0)
+            return;
+
+        lastShotTime = Time.time;
+        currentAmmo--;
+        UpdateBulletImages();
+        UpdateUI();
+
+        // Lógica de animación de disparo
+        // Aquí puedes llamar a la animación "Shoot" y luego volver a "Idle"
+    }
+
+    // Método para intentar recargar
+    public void TryReload()
+    {
+        if (isReloading || currentAmmo == maxAmmoPerMagazine || totalAmmo <= 0)
+            return;
+
+        isReloading = true;
+
+        // Lógica de animación de recarga
+
+        animator.SetBool("IsReloading", true);
+        animator.SetTrigger("Reload");
+
+        // Aquí puedes llamar a la animación "Reload"
+
+        int bulletsNeeded = maxAmmoPerMagazine - currentAmmo;
+        int bulletsToAdd = Mathf.Min(bulletsNeeded, totalAmmo);
+
+        totalAmmo -= bulletsToAdd;
+        currentAmmo += bulletsToAdd;
+
+        // Esperar a que termine la animación de recarga antes de actualizar las imágenes
+        Invoke("FinishReload", 3f); // Ajusta el tiempo según la duración de la animación
+    }
+
+    private void FinishReload()
+    {
+        isReloading = false;
+        UpdateBulletImages();
+        UpdateUI();
+
+        animator.SetBool("IsReloading", false);
+    }
+
+    // Actualizar las imágenes de las balas en el cartucho
+    private void UpdateBulletImages()
+    {
+        for (int i = 0; i < bulletImages.Length; i++)
+        {
+            bulletImages[i].gameObject.SetActive(i < currentAmmo);
+        }
+    }
+
+    // Actualizar la UI (balas totales y cartuchos)
+    private void UpdateUI()
+    {
+        if (totalAmmoText != null)
+        {
+            totalAmmoText.text = "" + totalAmmo;
+        }
+
+        if (magazinesText != null)
+        {
+            int magazines = totalAmmo / maxAmmoPerMagazine;
+            magazinesText.text = "" + magazines;
+        }
+    }
+
+    // Método para agregar balas (usado por AmmoBox)
     public void AddAmmo(int amount)
     {
-        if (currentAmmo < regenerationLimit)
+        if (CanRegenerateAmmo())
         {
-            currentAmmo = Mathf.Min(currentAmmo + amount, maxAmmo);
-            UpdateAmmoUI();
-        }
-    }
-
-    // Actualizar el texto de la UI
-    private void UpdateAmmoUI()
-    {
-        if (ammoText != null)
-        {
-            ammoText.text = "Ammo: " + currentAmmo;
+            totalAmmo = Mathf.Min(totalAmmo + amount, maxTotalAmmo);
+            UpdateUI();
         }
     }
 
     // Método para verificar si se puede regenerar balas
     public bool CanRegenerateAmmo()
     {
-        return currentAmmo <= regenerationLimit / 2; 
+        return totalAmmo <= regenerationLimit;
+    }
+
+    // Método para gastar una bala (usado por ArmaMovimiento)
+    public void UseAmmo()
+    {
+        if (currentAmmo > 0)
+        {
+            currentAmmo--;
+            UpdateBulletImages();
+            UpdateUI();
+        }
     }
 }

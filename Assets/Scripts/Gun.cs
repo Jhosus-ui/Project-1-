@@ -5,6 +5,7 @@ using UnityEngine;
 public class ArmaMovimiento : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
+    private Animator animator;
 
     public new Camera camera;
     public Transform spawner;
@@ -13,6 +14,7 @@ public class ArmaMovimiento : MonoBehaviour
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -26,6 +28,8 @@ public class ArmaMovimiento : MonoBehaviour
         // Verificar si hay balas disponibles
         if (Input.GetButtonDown("Fire1") && AmmoManager.Instance.currentAmmo > 0)
         {
+            animator.SetTrigger("Shoot");
+
             // Instanciar la bala en el punto de disparo
             GameObject Bala = Instantiate(balaPrefab);
             Bala.transform.position = spawner.position;
@@ -33,6 +37,10 @@ public class ArmaMovimiento : MonoBehaviour
 
             // Gastar una bala
             AmmoManager.Instance.UseAmmo();
+
+            
+
+
         }
         else if (Input.GetButtonDown("Fire1") && AmmoManager.Instance.currentAmmo <= 0)
         {
