@@ -20,7 +20,7 @@ public class AmmoManager : MonoBehaviour
     private bool isReloading = false;
     private float lastShotTime = 0f;
 
-    private Animator animator;
+    private WeaponAnimations weaponAnimations; // Referencia al script de animaciones del arma
 
     private void Awake()
     {
@@ -36,7 +36,13 @@ public class AmmoManager : MonoBehaviour
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        // Obtener la referencia al script de animaciones del arma
+        weaponAnimations = FindObjectOfType<WeaponAnimations>();
+        if (weaponAnimations == null)
+        {
+            Debug.LogError("WeaponAnimations no encontrado en la escena.");
+        }
+
         UpdateUI();
     }
 
@@ -66,6 +72,7 @@ public class AmmoManager : MonoBehaviour
     // Método para disparar
     public void Shoot()
     {
+        // Verificar si el arma está recargando o si no hay balas
         if (Time.time - lastShotTime < timeBetweenShots || isReloading || currentAmmo <= 0)
             return;
 
@@ -74,8 +81,8 @@ public class AmmoManager : MonoBehaviour
         UpdateBulletImages();
         UpdateUI();
 
-        // Lógica de animación de disparo
-        // Aquí puedes llamar a la animación "Shoot" y luego volver a "Idle"
+        // Activar la animación de disparo
+        weaponAnimations.PlayShootAnimation();
     }
 
     // Método para intentar recargar
@@ -86,12 +93,8 @@ public class AmmoManager : MonoBehaviour
 
         isReloading = true;
 
-        // Lógica de animación de recarga
-
-        animator.SetBool("IsReloading", true);
-        animator.SetTrigger("Reload");
-
-        // Aquí puedes llamar a la animación "Reload"
+        // Activar la animación de recarga
+        weaponAnimations.PlayReloadAnimation();
 
         int bulletsNeeded = maxAmmoPerMagazine - currentAmmo;
         int bulletsToAdd = Mathf.Min(bulletsNeeded, totalAmmo);
@@ -100,7 +103,7 @@ public class AmmoManager : MonoBehaviour
         currentAmmo += bulletsToAdd;
 
         // Esperar a que termine la animación de recarga antes de actualizar las imágenes
-        Invoke("FinishReload", 3f); // Ajusta el tiempo según la duración de la animación
+        Invoke("FinishReload", 2.3f); // Ajusta el tiempo según la duración de la animación
     }
 
     private void FinishReload()
@@ -109,7 +112,8 @@ public class AmmoManager : MonoBehaviour
         UpdateBulletImages();
         UpdateUI();
 
-        animator.SetBool("IsReloading", false);
+        // Finalizar la animación de recarga
+        weaponAnimations.FinishReloadAnimation();
     }
 
     // Actualizar las imágenes de las balas en el cartucho
@@ -161,5 +165,11 @@ public class AmmoManager : MonoBehaviour
             UpdateBulletImages();
             UpdateUI();
         }
+    }
+
+    // Método para verificar si el arma está recargando
+    public bool IsReloading()
+    {
+        return isReloading;
     }
 }

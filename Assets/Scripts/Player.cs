@@ -7,13 +7,16 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
+    private Animator animator;
     private bool isLookingAtMouse = false;
     private float lookTimer = 0f;
+    private bool isWalking = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>(); // Obtener el componente Animator
     }
 
     void Update()
@@ -39,6 +42,9 @@ public class PlayerController : MonoBehaviour
         {
             FlipX(); // Volver a la lógica normal de voltear en el eje X
         }
+
+        // Actualizar la animación basada en el estado de isWalking
+        animator.SetBool("IsWalking", isWalking);
     }
 
     void Movement()
@@ -47,6 +53,9 @@ public class PlayerController : MonoBehaviour
         float moveY = Input.GetAxisRaw("Vertical");
         Vector2 moveDirection = new Vector2(moveX, moveY).normalized;
         rb.linearVelocity = moveDirection * moveSpeed;
+
+        // Determinar si el jugador está caminando
+        isWalking = moveDirection.magnitude > 0;
     }
 
     void FlipX()

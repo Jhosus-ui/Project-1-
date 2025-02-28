@@ -25,8 +25,8 @@ public class ArmaMovimiento : MonoBehaviour
 
     void Disparar()
     {
-        // Verificar si hay balas disponibles
-        if (Input.GetButtonDown("Fire1") && AmmoManager.Instance.currentAmmo > 0)
+        // Verificar si hay balas disponibles y si no se está recargando
+        if (Input.GetButtonDown("Fire1") && AmmoManager.Instance.currentAmmo > 0 && !AmmoManager.Instance.IsReloading())
         {
             animator.SetTrigger("Shoot");
 
@@ -37,10 +37,6 @@ public class ArmaMovimiento : MonoBehaviour
 
             // Gastar una bala
             AmmoManager.Instance.UseAmmo();
-
-            
-
-
         }
         else if (Input.GetButtonDown("Fire1") && AmmoManager.Instance.currentAmmo <= 0)
         {
