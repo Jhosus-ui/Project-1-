@@ -185,4 +185,16 @@ public class PlayerHealth : MonoBehaviour
             damageScreen.color = color;
         }
     }
+
+    public bool CanHeal()
+    {
+        return currentHealth < maxHealth; // Verificar si el jugador puede curarse
+    }
+
+    public void Heal(int amount)
+    {
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth); // Curar al jugador sin exceder la vida máxima
+        UpdateHealthUI(); // Actualizar la UI de salud
+        Debug.Log("El jugador se ha curado. Vida actual: " + currentHealth);
+    }
 }

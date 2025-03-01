@@ -110,7 +110,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60a171c7336070b4bbce1fcaf3039bbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammoAmount: 10
+  minAmmoAmount: 6
+  maxAmmoAmount: 12
+  levitationHeight: 0.2
+  levitationSpeed: 0.5
 --- !u!1 &2926415408411832688
 GameObject:
   m_ObjectHideFlags: 0
