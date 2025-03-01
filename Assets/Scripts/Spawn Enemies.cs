@@ -115,6 +115,7 @@ public class EnemySpawner : MonoBehaviour
     public void EnemigoDerrotado()
     {
         currentEnemies--;
+        ScoreManager.Instance.AddScore(13);
 
         // Verificar si todos los enemigos de la oleada actual fueron derrotados
         if (currentEnemies <= 0 && !esperandoSiguienteOleada)
@@ -124,7 +125,7 @@ public class EnemySpawner : MonoBehaviour
             multiplicadorVida *= 1.1f; // Aumentar la vida en un 10% por oleada
 
             // Mostrar el texto temporal de la oleada
-            GameManager.Instance.MostrarTextoOleadaTemporal($"Ronda {oleadaActual}");
+            GameManager.Instance.MostrarTextoOleadaTemporal($"{oleadaActual}");
 
             // Esperar 10 segundos antes de la siguiente oleada
             Invoke(nameof(ComenzarNuevaOleada), tiempoEntreOleadas);
