@@ -1,79 +1,58 @@
 using UnityEngine;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    // Configuración pública (Libre a Modificar pero no las variables de raiz)
+    // Configuración pública
     public float tiempoInicial = 60f;
     public float tiempoMinimoReloj = 5f, tiempoMaximoReloj = 15f;
     public float limiteSuperiorTiempo = 90f, limiteInferiorTiempo = 30f;
     public float intervaloMinimoGeneracion = 5f, intervaloMaximoGeneracion = 10f;
     public TMP_Text textoReloj;
+    public TMP_Text textoOleada; // Texto permanente para mostrar "Round: X"
+    public TMP_Text textoOleadaTemporal; // Texto temporal para mostrar "Ronda X"
     public GameObject relojPrefab;
     public Transform[] puntosSpawn;
 
-    // Variables privadas (Ten Cuidado de Tocarlas)
+    // Referencia al EnemySpawner
+    public EnemySpawner enemySpawner;
+
+    // Variables privadas
     private float tiempoRestante;
     private bool juegoActivo = true, temporizadorIniciado = false;
     private int relojesActivos = 0;
     private float tiempoUltimaGeneracion;
     private float siguienteIntervaloGeneracion;
 
-
-
-    // Variables para la Regeneracion del Enemy 
-    public GameObject enemyPrefab;
-    public Transform[] spawnPoints;
-    public int minEnemies = 3, maxEnemies = 7;
-    public float minSpawnInterval = 2f, maxSpawnInterval = 5f;
-    public float startDelay = 10f;
-
-    // Variables privadas
-    private int currentEnemies = 0;
-    private float nextSpawnTime;
-    private bool juegoIniciado = false;
-
     public static GameManager Instance;
     private bool isTimeUp = false;
-    // Variables para la vida del enemigo
-    public int vidaMinimaEnemigo = 1;
-    public int vidaMaximaEnemigo = 3;
 
-    // Métodos para obtener la vida mínima y máxima del enemigo
-    public int GetVidaMinimaEnemigo() => vidaMinimaEnemigo;
-    public int GetVidaMaximaEnemigo() => vidaMaximaEnemigo;
+    void Awake()
+    {
+        // Configurar el Singleton
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
         tiempoRestante = tiempoInicial;
         ActualizarTextoReloj();
         siguienteIntervaloGeneracion = Random.Range(intervaloMinimoGeneracion, intervaloMaximoGeneracion);
-        nextSpawnTime = Time.time + startDelay;
     }
 
     void Update()
     {
-        //Temporizador 
+        // Temporizador
         if (!temporizadorIniciado && JugadorSeMueve()) IniciarTemporizador();
         if (temporizadorIniciado && juegoActivo) ActualizarJuego();
-
-
-        //Enemy 
-        if (!juegoIniciado && (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0))
-        {
-            juegoIniciado = true;
-            nextSpawnTime = Time.time + startDelay;
-        }
-
-        // Generar enemigos si el juego ha comenzado
-        if (juegoIniciado && Time.time >= nextSpawnTime)
-        {
-            GenerarOleadaEnemigos();
-            nextSpawnTime = Time.time + Random.Range(minSpawnInterval, maxSpawnInterval);
-        }
-
     }
 
     bool JugadorSeMueve() => Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0;
@@ -110,8 +89,10 @@ public class GameManager : MonoBehaviour
             siguienteIntervaloGeneracion = Random.Range(intervaloMinimoGeneracion, intervaloMaximoGeneracion);
         }
     }
+
     void ActualizarTextoReloj() =>
         textoReloj.text = $"{Mathf.FloorToInt(tiempoRestante / 60):00}:{Mathf.FloorToInt(tiempoRestante % 60):00}";
+
     public void AumentarTiempo(float tiempoAñadido)
     {
         if (juegoActivo)
@@ -122,44 +103,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Awake()
+    public void MostrarTextoOleadaTemporal(string mensaje)
     {
-        // Configurar el Singleton
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        textoOleadaTemporal.text = mensaje;
+        Invoke("LimpiarTextoOleadaTemporal", 3f); // Limpiar el texto después de 3 segundos
     }
-    public float ObtenerTiempoRelojAleatorio() => Random.Range(tiempoMinimoReloj, tiempoMaximoReloj);
-    void GenerarOleadaEnemigos()
+
+    void LimpiarTextoOleadaTemporal()
     {
-        int cantidadEnemigos = Random.Range(minEnemies, maxEnemies + 1);
-        for (int i = 0; i < cantidadEnemigos; i++)
-        {
-            if (currentEnemies < maxEnemies)
-            {
-                GenerarEnemigo();
-            }
-        }
+        textoOleadaTemporal.text = "";
     }
-    void GenerarEnemigo()
+
+    public void ActualizarTextoOleada(string mensaje)
     {
-        if (enemyPrefab != null && spawnPoints.Length > 0)
-        {
-            Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-            Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
-            currentEnemies++;
-        }
+        textoOleada.text = mensaje;
     }
-    public void EnemigoDerrotado()
-    {
-        currentEnemies--;
-        ScoreManager.Instance.AddScore(13);
-    }
+
     void TerminarJuego()
     {
         tiempoRestante = 0;
@@ -169,16 +128,20 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("GameOver");
     }
 
-
     public void PlayerDied()
     {
         Debug.Log("El jugador ha muerto.");
         isTimeUp = false;
         SceneManager.LoadScene("GameOver");
     }
+
     public bool IsTimeUp()
     {
         return isTimeUp;
+    }
 
+    public float ObtenerTiempoRelojAleatorio()
+    {
+        return Random.Range(tiempoMinimoReloj, tiempoMaximoReloj);
     }
 }

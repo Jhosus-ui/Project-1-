@@ -5,13 +5,16 @@ public class Enemy : MonoBehaviour
 {
     private NavMeshAgent agent;
     private GameObject player;
-    private SpriteRenderer spriteRenderer; // Para manejar el flip X
+    private SpriteRenderer spriteRenderer;
 
     // Variables de vida (ahora públicas para configurar el rango)
-    public int minHealth = 1; // Vida mínima del enemigo
-    public int maxHealth = 3; // Vida máxima del enemigo
-    public int currentHealth; // Vida actual del enemigo
+    public float minHealth = 1; // Vida mínima del enemigo
+    public float maxHealth = 3; // Vida máxima del enemigo
+    public float currentHealth; // Vida actual del enemigo
+    private float multiplicadorVida = 1.0f;
 
+
+    
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -65,8 +68,14 @@ public class Enemy : MonoBehaviour
     void InicializarVida()
     {
         // Asignar una vida aleatoria dentro del rango [minHealth, maxHealth]
-        currentHealth = Random.Range(minHealth, maxHealth + 1); // +1 para incluir el valor máximo
+        currentHealth = Mathf.RoundToInt(Random.Range(minHealth, maxHealth + 1) * multiplicadorVida); // +1 para incluir el valor máximo
         Debug.Log($"Enemigo generado con {currentHealth} de vida.");
+    }
+
+    public void SetMultiplicadorVida(float multiplicador)
+    {
+        multiplicadorVida = multiplicador;
+        InicializarVida();
     }
 
     public void TakeDamage(int damageAmount)
@@ -81,9 +90,18 @@ public class Enemy : MonoBehaviour
 
     public void Morir()
     {
-        GameManager.Instance.EnemigoDerrotado();
+        if (EnemySpawner.Instance != null)
+        {
+            EnemySpawner.Instance.EnemigoDerrotado();
+        }
+        else
+        {
+            Debug.LogWarning("EnemySpawner.Instance es null.");
+        }
+
         Destroy(gameObject);
     }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
