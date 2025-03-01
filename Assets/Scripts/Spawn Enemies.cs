@@ -1,7 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using TMPro;
-using UnityEngine.SceneManagement;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -10,72 +8,58 @@ public class EnemySpawner : MonoBehaviour
     public Transform[] spawnPoints;
     public int minEnemies = 10; // Enemigos iniciales en la primera oleada
     public int incrementoEnemigosPorOleada = 3; // Enemigos adicionales por oleada
-    public float minSpawnInterval = 2f, maxSpawnInterval = 5f;
     public float startDelay = 10f; // Tiempo de espera antes de la primera oleada
     public float intervaloEntreEnemigos = 0.5f; // Tiempo entre la aparición de cada enemigo
+    public float tiempoEntreOleadas = 10f; // Tiempo de espera entre oleadas
 
     // Variables privadas
     private int currentEnemies = 0;
-    private float nextSpawnTime;
     private bool juegoIniciado = false;
     private int oleadaActual = 0; // Número de la oleada actual
     private bool esperandoSiguienteOleada = false; // Para controlar el paso a la siguiente oleada
     private float multiplicadorVida = 1.0f; // Multiplicador de vida por oleada
-    private bool primeraOleadaGenerada = false; // Controlar la primera oleada
 
+    // Singleton
+    public static EnemySpawner Instance { get; private set; }
 
-    public static EnemySpawner Instance;
+    void Awake()
+    {
+        // Implementación del Singleton
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("Ya existe una instancia de EnemySpawner. Destruyendo esta instancia.");
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
         // Iniciar la espera para la primera oleada
-        nextSpawnTime = Time.time + startDelay;
+        Invoke(nameof(IniciarPrimeraOleada), startDelay);
     }
 
-    void Update()
+    void IniciarPrimeraOleada()
     {
-        // Iniciar el juego cuando el jugador se mueva
-        if (!juegoIniciado && (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0))
+        if (!juegoIniciado)
         {
             juegoIniciado = true;
         }
 
-        // Generar la primera oleada solo después del delay y cuando el jugador se haya movido
-        if (juegoIniciado && !primeraOleadaGenerada && Time.time >= nextSpawnTime)
-        {
-            StartCoroutine(GenerarOleadaEnemigosGradualmente()); // Usamos la corutina
-            primeraOleadaGenerada = true;
-            nextSpawnTime = Time.time + Random.Range(minSpawnInterval, maxSpawnInterval);
-        }
-
-        // Verificar si todos los enemigos de la oleada actual fueron derrotados y esperar para la siguiente oleada
-        if (currentEnemies <= 0 && juegoIniciado && !esperandoSiguienteOleada && primeraOleadaGenerada)
-        {
-            esperandoSiguienteOleada = true;
-            oleadaActual++;
-            multiplicadorVida *= 1.1f; // Aumentar la vida en un 10% por oleada
-
-            // Mostrar el texto temporal de la oleada
-            GameManager.Instance.MostrarTextoOleadaTemporal($" Round: {oleadaActual}");
-
-            // Esperar 5 segundos antes de la siguiente oleada
-            Invoke(nameof(ComenzarNuevaOleada), 5f);
-        }
-    }
-
-    void ComenzarNuevaOleada()
-    {
-        esperandoSiguienteOleada = false;
-        StartCoroutine(GenerarOleadaEnemigosGradualmente()); // Usamos la corutina
-        nextSpawnTime = Time.time + Random.Range(minSpawnInterval, maxSpawnInterval); // Definir tiempo hasta la siguiente oleada
+        // Iniciar la primera oleada
+        StartCoroutine(GenerarOleadaEnemigosGradualmente());
     }
 
     IEnumerator GenerarOleadaEnemigosGradualmente()
     {
         int cantidadEnemigos = minEnemies + (oleadaActual * incrementoEnemigosPorOleada);
 
-        // Actualizar el texto al inicio de la oleada
-        GameManager.Instance.ActualizarTextoOleada($"{oleadaActual}");
+        // Notificar al GameManager para actualizar el texto de la oleada
+        GameManager.Instance.ActualizarTextoOleada($"Round: {oleadaActual}");
+        GameManager.Instance.MostrarTextoOleadaTemporal($"{oleadaActual}");
 
         for (int i = 0; i < cantidadEnemigos; i++)
         {
@@ -131,7 +115,6 @@ public class EnemySpawner : MonoBehaviour
     public void EnemigoDerrotado()
     {
         currentEnemies--;
-        ScoreManager.Instance.AddScore(13);
 
         // Verificar si todos los enemigos de la oleada actual fueron derrotados
         if (currentEnemies <= 0 && !esperandoSiguienteOleada)
@@ -143,8 +126,14 @@ public class EnemySpawner : MonoBehaviour
             // Mostrar el texto temporal de la oleada
             GameManager.Instance.MostrarTextoOleadaTemporal($"Ronda {oleadaActual}");
 
-            // Esperar 5 segundos antes de la siguiente oleada
-            Invoke(nameof(ComenzarNuevaOleada), 5f);
+            // Esperar 10 segundos antes de la siguiente oleada
+            Invoke(nameof(ComenzarNuevaOleada), tiempoEntreOleadas);
         }
+    }
+
+    void ComenzarNuevaOleada()
+    {
+        esperandoSiguienteOleada = false;
+        StartCoroutine(GenerarOleadaEnemigosGradualmente()); // Usamos la corutina
     }
 }

@@ -32525,7 +32525,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -798, y: 503}
+  m_AnchoredPosition: {x: 0.0000019073, y: 290}
   m_SizeDelta: {x: 91.49, y: 84.32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &962072472
@@ -32548,9 +32548,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '
-
-    00'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 79acecfef169fd74ba6c0646189fd710, type: 2}
   m_sharedMaterial: {fileID: -5473905951948887439, guid: 79acecfef169fd74ba6c0646189fd710, type: 2}
@@ -32577,14 +32575,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70
-  m_fontSizeBase: 70
+  m_fontSize: 90
+  m_fontSizeBase: 90
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 3
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -48231,8 +48229,8 @@ MonoBehaviour:
   intervaloMinimoGeneracion: 5
   intervaloMaximoGeneracion: 10
   textoReloj: {fileID: 1949028281}
-  textoOleada: {fileID: 962072472}
-  textoOleadaTemporal: {fileID: 854558535}
+  textoOleada: {fileID: 854558535}
+  textoOleadaTemporal: {fileID: 962072472}
   relojPrefab: {fileID: 6266223037296988868, guid: f12e04a41a581044f97436e3280da79a, type: 3}
   puntosSpawn:
   - {fileID: 327352989}
@@ -48339,10 +48337,9 @@ MonoBehaviour:
   - {fileID: 1401202941}
   minEnemies: 10
   incrementoEnemigosPorOleada: 3
-  minSpawnInterval: 4
-  maxSpawnInterval: 8
   startDelay: 10
-  intervaloEntreEnemigos: 2
+  intervaloEntreEnemigos: 2.5
+  tiempoEntreOleadas: 10
 --- !u!1 &2041028508
 GameObject:
   m_ObjectHideFlags: 0
