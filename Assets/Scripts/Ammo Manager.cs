@@ -6,26 +6,26 @@ public class AmmoManager : MonoBehaviour
 {
     public static AmmoManager Instance;
 
-    public int currentAmmo = 10; // Balas en el cartucho actual
-    public int maxAmmoPerMagazine = 10; // Máximo de balas por cartucho
-    public int totalAmmo = 30; // Balas totales disponibles
-    public int maxTotalAmmo = 30; // Máximo de balas totales
-    public int regenerationLimit = 30; // Límite de regeneración de balas
-    public float timeBetweenShots = 0.5f; // Tiempo entre disparos
+    public int currentAmmo = 10; 
+    public int maxAmmoPerMagazine = 10; 
+    public int totalAmmo = 30; 
+    public int maxTotalAmmo = 30; 
+    public int regenerationLimit = 30; 
+    public float timeBetweenShots = 0.5f; 
 
-    public TextMeshProUGUI totalAmmoText; // Texto para balas totales
-    public TextMeshProUGUI magazinesText; // Texto para cartuchos
-    public Image[] bulletImages; // Imágenes de las balas en el cartucho (10 imágenes)
+    public TextMeshProUGUI totalAmmoText; 
+    public TextMeshProUGUI magazinesText; 
+    public Image[] bulletImages; 
 
-    public AudioClip reloadSound; // Sonido de recarga
-    public AudioClip noAmmoSound; // Sonido cuando no hay balas para recargar
-    public AudioClip ammoAddedSound; // Sonido cuando se aumenta totalAmmo
+    public AudioClip reloadSound; 
+    public AudioClip noAmmoSound;
+    public AudioClip ammoAddedSound; 
     private AudioSource audioSource;
 
     private bool isReloading = false;
     private float lastShotTime = 0f;
 
-    private WeaponAnimations weaponAnimations; // Referencia al script de animaciones del arma
+    private WeaponAnimations weaponAnimations; 
 
     private void Awake()
     {
@@ -36,8 +36,6 @@ public class AmmoManager : MonoBehaviour
     private void Start()
     {
         weaponAnimations = FindFirstObjectByType<WeaponAnimations>();
-        if (weaponAnimations == null) Debug.LogError("WeaponAnimations no encontrado en la escena.");
-
         audioSource = GetComponent<AudioSource>(); // Obtener el componente AudioSource
         UpdateUI();
     }
@@ -64,13 +62,13 @@ public class AmmoManager : MonoBehaviour
 
         if (totalAmmo <= 0)
         {
-            audioSource.PlayOneShot(noAmmoSound); // Reproducir sonido de "no hay balas"
+            audioSource.PlayOneShot(noAmmoSound); 
             return;
         }
 
         isReloading = true;
         weaponAnimations.PlayReloadAnimation();
-        audioSource.PlayOneShot(reloadSound); // Reproducir sonido de recarga
+        audioSource.PlayOneShot(reloadSound); 
 
         int bulletsNeeded = maxAmmoPerMagazine - currentAmmo;
         int bulletsToAdd = Mathf.Min(bulletsNeeded, totalAmmo);
@@ -78,7 +76,7 @@ public class AmmoManager : MonoBehaviour
         totalAmmo -= bulletsToAdd;
         currentAmmo += bulletsToAdd;
 
-        Invoke("FinishReload", 2.3f); // Ajusta el tiempo según la duración de la animación
+        Invoke("FinishReload", 2.3f);  //tiempo animacion
     }
 
     private void FinishReload()
@@ -105,10 +103,9 @@ public class AmmoManager : MonoBehaviour
     {
         if (CanRegenerateAmmo())
         {
-            int previousAmmo = totalAmmo; // Guardar el valor anterior de totalAmmo
+            int previousAmmo = totalAmmo; 
             totalAmmo = Mathf.Min(totalAmmo + amount, maxTotalAmmo);
 
-            // Reproducir sonido si hubo un aumento en totalAmmo
             if (totalAmmo > previousAmmo && ammoAddedSound != null && audioSource != null)
             {
                 audioSource.PlayOneShot(ammoAddedSound);
@@ -119,7 +116,6 @@ public class AmmoManager : MonoBehaviour
     }
 
     public bool CanRegenerateAmmo() => totalAmmo <= regenerationLimit;
-
     public void UseAmmo()
     {
         if (currentAmmo > 0)

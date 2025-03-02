@@ -5,13 +5,13 @@ using UnityEngine.EventSystems;
 
 public class PauseManager : MonoBehaviour
 {
-    public GameObject pauseText; 
-    public Button pauseButton;        
-    public Button menuButton;        
-    public string menuSceneName = "MainMenu"; 
+    public GameObject pauseText;
+    public Button pauseButton;
+    public Button menuButton;
+    public string menuSceneName = "MainMenu";
 
-    public AudioClip hoverSound; 
-    public AudioClip clickSound; 
+    public AudioClip hoverSound;
+    public AudioClip clickSound;
     private AudioSource audioSource;
     public static bool isPaused = false;
 
@@ -35,13 +35,7 @@ public class PauseManager : MonoBehaviour
             audioSource.PlayOneShot(clickSound);
         }
 
-        StartCoroutine(DelayedAction(action));
-    }
-
-    private System.Collections.IEnumerator DelayedAction(System.Action action)
-    {
-        yield return new WaitForSeconds(1f); // Esperar 0.2 segundos
-        action.Invoke();
+        action.Invoke(); // Ejecutar la acción inmediatamente sin retraso
     }
 
     private void AddHoverEffect(Button button)
@@ -67,6 +61,9 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = isPaused ? 0f : 1f;
         pauseText?.SetActive(isPaused);
         menuButton?.gameObject.SetActive(isPaused);
+
+        // Asegurarse de que el botón de pausa esté siempre activo
+        pauseButton.interactable = true;
     }
 
     public static bool IsPaused() => isPaused;

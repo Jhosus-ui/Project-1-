@@ -38,7 +38,7 @@ public class MainMenu : MonoBehaviour
 
     private System.Collections.IEnumerator DelayedAction(Button button)
     {
-        yield return new WaitForSeconds(1f); //otra espera, con todo lo dejo tambien
+        yield return new WaitForSeconds(0.1f); //otra espera, con todo lo dejo tambien
         if (button.name == "StartButton") StartGame();
         else if (button.name == "ExitButton") ExitGame();
     }

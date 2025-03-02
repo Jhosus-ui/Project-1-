@@ -8,8 +8,6 @@ public class WeaponAnimations : MonoBehaviour
     {
         animator = GetComponent<Animator>();
     }
-
-    // Método para activar la animación de disparo
     public void PlayShootAnimation()
     {
         animator.SetTrigger("Shoot");

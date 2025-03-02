@@ -48,7 +48,7 @@ public class GameOverScreen : MonoBehaviour
 
     private System.Collections.IEnumerator DelayedAction(Button button)
     {
-        yield return new WaitForSeconds(1f); //Una espera talvez funcione pero lo dejo...
+        yield return new WaitForSeconds(0.1f); //Una espera talvez funcione pero lo dejo...
         if (button.name == "RestartButton") RestartGame();
         else if (button.name == "MainMenuButton") ExitToMainMenu();
     }
