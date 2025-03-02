@@ -21,6 +21,7 @@ public class ArmaMovimiento : MonoBehaviour
 
     void Update()
     {
+        if (PauseManager.IsPaused()) return;
         if (Input.GetButtonDown("Fire1")) Disparar();
         RotateTowardsMouse();
     }

@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class GameOverScreen : MonoBehaviour
 {
@@ -9,42 +11,73 @@ public class GameOverScreen : MonoBehaviour
     public string mainMenuScene = "MainMenu"; // Nombre de la escena del menú principal
     public string gameScene = "GameScene"; // Nombre de la escena del juego
 
+    // Sonidos
+    public AudioClip hoverSound; // Sonido cuando el mouse pasa por encima del botón
+    public AudioClip clickSound; // Sonido cuando se hace clic en el botón
+    private AudioSource audioSource;
+
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+
         // Obtener el resultado del juego y el puntaje final desde el GameManager
         bool isTimeUp = GameManager.Instance.IsTimeUp();
         int finalScore = ScoreManager.Instance.score;
 
         // Configurar los textos
-        Setup(isTimeUp, finalScore);
+        resultText.text = isTimeUp ? "Round Finished" : "You have died";
+        scoreText.text = finalScore.ToString();
+
+        // Configurar los sonidos para los botones
+        ConfigureButtons();
     }
 
-    // Método para configurar la pantalla de fin de juego
-    public void Setup(bool isTimeUp, int finalScore)
+    private void ConfigureButtons()
     {
-        // Mostrar el mensaje correspondiente
-        if (isTimeUp)
+        Button[] buttons = FindObjectsByType<Button>(FindObjectsSortMode.None);
+        foreach (Button button in buttons)
         {
-            resultText.text = "Round Finished";
+            button.onClick.AddListener(() => OnButtonClick(button));
+            AddHoverEffect(button);
         }
-        else
+    }
+
+    private void OnButtonClick(Button button)
+    {
+        if (clickSound != null && audioSource != null)
         {
-            resultText.text = "You have died";
+            audioSource.PlayOneShot(clickSound);
         }
 
-        // Mostrar el puntaje final
-        scoreText.text = "" + finalScore;
+        StartCoroutine(DelayedAction(button));
     }
 
-    // Método para reiniciar el juego
-    public void RestartGame()
+    private System.Collections.IEnumerator DelayedAction(Button button)
     {
-        SceneManager.LoadScene(gameScene); // Cargar la escena del juego
+        yield return new WaitForSeconds(0.2f); // Esperar 0.2 segundos
+
+        if (button.name == "RestartButton") RestartGame();
+        else if (button.name == "MainMenuButton") ExitToMainMenu();
     }
 
-    // Método para salir al menú principal
-    public void ExitToMainMenu()
+    private void AddHoverEffect(Button button)
     {
-        SceneManager.LoadScene(mainMenuScene); // Cargar la escena del menú principal
+        EventTrigger trigger = button.gameObject.AddComponent<EventTrigger>();
+
+        var pointerEnter = new EventTrigger.Entry();
+        pointerEnter.eventID = EventTriggerType.PointerEnter;
+        pointerEnter.callback.AddListener((data) => OnPointerEnterButton(button));
+        trigger.triggers.Add(pointerEnter);
     }
+
+    private void OnPointerEnterButton(Button button)
+    {
+        if (hoverSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(hoverSound);
+        }
+    }
+
+    public void RestartGame() => SceneManager.LoadScene(gameScene);
+    public void ExitToMainMenu() => SceneManager.LoadScene(mainMenuScene);
 }

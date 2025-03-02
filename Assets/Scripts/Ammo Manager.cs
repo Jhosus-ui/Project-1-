@@ -19,6 +19,7 @@ public class AmmoManager : MonoBehaviour
 
     public AudioClip reloadSound; // Sonido de recarga
     public AudioClip noAmmoSound; // Sonido cuando no hay balas para recargar
+    public AudioClip ammoAddedSound; // Sonido cuando se aumenta totalAmmo
     private AudioSource audioSource;
 
     private bool isReloading = false;
@@ -102,8 +103,19 @@ public class AmmoManager : MonoBehaviour
 
     public void AddAmmo(int amount)
     {
-        if (CanRegenerateAmmo()) totalAmmo = Mathf.Min(totalAmmo + amount, maxTotalAmmo);
-        UpdateUI();
+        if (CanRegenerateAmmo())
+        {
+            int previousAmmo = totalAmmo; // Guardar el valor anterior de totalAmmo
+            totalAmmo = Mathf.Min(totalAmmo + amount, maxTotalAmmo);
+
+            // Reproducir sonido si hubo un aumento en totalAmmo
+            if (totalAmmo > previousAmmo && ammoAddedSound != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(ammoAddedSound);
+            }
+
+            UpdateUI();
+        }
     }
 
     public bool CanRegenerateAmmo() => totalAmmo <= regenerationLimit;

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1583465134775072980}
   - component: {fileID: 6667575937964576366}
   - component: {fileID: 7366639993249429824}
-  - component: {fileID: 2326385511194516320}
+  - component: {fileID: -193956323088908717}
   m_Layer: 0
   m_Name: Ammo
   m_TagString: Untagged
@@ -117,7 +117,7 @@ MonoBehaviour:
   levitationSpeed: 0.5
   collectSound: {fileID: 8300000, guid: db0522111b3ea3640870cb65a2d9d24b, type: 3}
   fullAmmoSound: {fileID: 8300000, guid: cd7c6031baa7f7640aae4a23c10e47a8, type: 3}
---- !u!82 &2326385511194516320
+--- !u!82 &-193956323088908717
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -12,15 +12,22 @@ public class PlayerController : MonoBehaviour
     private float lookTimer = 0f;
     private bool isWalking = false;
 
+    // Sonido de caminar
+    public AudioClip walkingSound; // Sonido cuando el jugador camina
+    private AudioSource audioSource;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>(); // Obtener el componente Animator
+        audioSource = GetComponent<AudioSource>(); // Obtener el componente AudioSource
     }
 
     void Update()
     {
+        if (PauseManager.IsPaused()) return;
+
         Movement();
 
         if (Input.GetMouseButtonDown(0)) // 0 es el botón izquierdo del mouse
@@ -45,6 +52,24 @@ public class PlayerController : MonoBehaviour
 
         // Actualizar la animación basada en el estado de isWalking
         animator.SetBool("IsWalking", isWalking);
+
+        // Reproducir sonido de caminar si el jugador está en movimiento
+        if (isWalking)
+        {
+            if (!audioSource.isPlaying && walkingSound != null)
+            {
+                audioSource.clip = walkingSound;
+                audioSource.loop = true; // Reproducir en loop
+                audioSource.Play();
+            }
+        }
+        else
+        {
+            if (audioSource.isPlaying)
+            {
+                audioSource.Stop(); // Detener el sonido si el jugador no está caminando
+            }
+        }
     }
 
     void Movement()

@@ -15,6 +15,10 @@ public class GameManager : MonoBehaviour
     public GameObject relojPrefab;
     public Transform[] puntosSpawn;
 
+    // Sonido cuando se aumenta el tiempo
+    public AudioClip timeAddedSound; // Sonido cuando se aumenta el tiempo
+    private AudioSource audioSource;
+
     // Referencia al EnemySpawner
     public EnemySpawner enemySpawner;
 
@@ -46,6 +50,9 @@ public class GameManager : MonoBehaviour
         tiempoRestante = tiempoInicial;
         ActualizarTextoReloj();
         siguienteIntervaloGeneracion = Random.Range(intervaloMinimoGeneracion, intervaloMaximoGeneracion);
+
+        // Obtener el componente AudioSource
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -83,10 +90,15 @@ public class GameManager : MonoBehaviour
         if (relojPrefab != null && puntosSpawn.Length > 0)
         {
             Transform puntoSpawn = puntosSpawn[Random.Range(0, puntosSpawn.Length)];
-            Instantiate(relojPrefab, puntoSpawn.position, Quaternion.identity).GetComponent<Reloj>().gameManager = this;
-            relojesActivos++;
-            tiempoUltimaGeneracion = Time.time;
-            siguienteIntervaloGeneracion = Random.Range(intervaloMinimoGeneracion, intervaloMaximoGeneracion);
+
+            // Verificar si la posición está ocupada antes de generar el reloj
+            if (!IsPositionOccupied(puntoSpawn.position))
+            {
+                Instantiate(relojPrefab, puntoSpawn.position, Quaternion.identity).GetComponent<Reloj>().gameManager = this;
+                relojesActivos++;
+                tiempoUltimaGeneracion = Time.time;
+                siguienteIntervaloGeneracion = Random.Range(intervaloMinimoGeneracion, intervaloMaximoGeneracion);
+            }
         }
     }
 
@@ -100,6 +112,12 @@ public class GameManager : MonoBehaviour
             tiempoRestante += tiempoAñadido;
             Debug.Log($"Tiempo añadido: {tiempoAñadido} segundos. Tiempo restante: {tiempoRestante}");
             relojesActivos--;
+
+            // Reproducir sonido cuando se aumenta el tiempo
+            if (timeAddedSound != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(timeAddedSound);
+            }
         }
     }
 
@@ -125,7 +143,7 @@ public class GameManager : MonoBehaviour
         juegoActivo = false;
         isTimeUp = true;
         Debug.Log("¡Tiempo agotado!");
-        SceneManager.LoadScene("GameOver");
+        SceneManager.LoadScene("Game Over");
     }
 
     public void PlayerDied()
@@ -143,5 +161,11 @@ public class GameManager : MonoBehaviour
     public float ObtenerTiempoRelojAleatorio()
     {
         return Random.Range(tiempoMinimoReloj, tiempoMaximoReloj);
+    }
+
+    private bool IsPositionOccupied(Vector3 position)
+    {
+        Collider[] colliders = Physics.OverlapSphere(position, 2f); // Radio de 2 unidades
+        return colliders.Length > 0; // Si hay colisiones, la posición está ocupada
     }
 }
