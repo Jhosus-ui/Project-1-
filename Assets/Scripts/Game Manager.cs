@@ -4,25 +4,20 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    // Configuración pública
     public float tiempoInicial = 60f;
     public float tiempoMinimoReloj = 5f, tiempoMaximoReloj = 15f;
     public float limiteSuperiorTiempo = 90f, limiteInferiorTiempo = 30f;
     public float intervaloMinimoGeneracion = 5f, intervaloMaximoGeneracion = 10f;
     public TMP_Text textoReloj;
-    public TMP_Text textoOleada; // Texto permanente para mostrar "Round: X"
-    public TMP_Text textoOleadaTemporal; // Texto temporal para mostrar "Ronda X"
+    public TMP_Text textoOleada; 
+    public TMP_Text textoOleadaTemporal; 
     public GameObject relojPrefab;
     public Transform[] puntosSpawn;
 
-    // Sonido cuando se aumenta el tiempo
-    public AudioClip timeAddedSound; // Sonido cuando se aumenta el tiempo
+    public AudioClip timeAddedSound; 
     private AudioSource audioSource;
-
-    // Referencia al EnemySpawner
     public EnemySpawner enemySpawner;
 
-    // Variables privadas
     private float tiempoRestante;
     private bool juegoActivo = true, temporizadorIniciado = false;
     private int relojesActivos = 0;
@@ -34,7 +29,6 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        // Configurar el Singleton
         if (Instance == null)
         {
             Instance = this;
@@ -50,14 +44,11 @@ public class GameManager : MonoBehaviour
         tiempoRestante = tiempoInicial;
         ActualizarTextoReloj();
         siguienteIntervaloGeneracion = Random.Range(intervaloMinimoGeneracion, intervaloMaximoGeneracion);
-
-        // Obtener el componente AudioSource
         audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
-        // Temporizador
         if (!temporizadorIniciado && JugadorSeMueve()) IniciarTemporizador();
         if (temporizadorIniciado && juegoActivo) ActualizarJuego();
     }
@@ -79,7 +70,7 @@ public class GameManager : MonoBehaviour
         if (DebeGenerarReloj()) GenerarReloj();
     }
 
-    bool DebeGenerarReloj() =>
+    bool DebeGenerarReloj() =>  //Experiemtando con Youtube 
         relojesActivos < 2 &&
         tiempoRestante > limiteInferiorTiempo &&
         tiempoRestante < limiteSuperiorTiempo &&
@@ -89,10 +80,8 @@ public class GameManager : MonoBehaviour
     {
         if (relojPrefab != null && puntosSpawn.Length > 0)
         {
-            Transform puntoSpawn = puntosSpawn[Random.Range(0, puntosSpawn.Length)];
-
-            // Verificar si la posición está ocupada antes de generar el reloj
-            if (!IsPositionOccupied(puntoSpawn.position))
+            Transform puntoSpawn = puntosSpawn[Random.Range(0, puntosSpawn.Length)]; 
+            if (!IsPositionOccupied(puntoSpawn.position)) // Hay que saber si está ocupada antes de generar el reloj
             {
                 Instantiate(relojPrefab, puntoSpawn.position, Quaternion.identity).GetComponent<Reloj>().gameManager = this;
                 relojesActivos++;
@@ -109,11 +98,8 @@ public class GameManager : MonoBehaviour
     {
         if (juegoActivo)
         {
-            tiempoRestante += tiempoAñadido;
-            Debug.Log($"Tiempo añadido: {tiempoAñadido} segundos. Tiempo restante: {tiempoRestante}");
+            tiempoRestante += tiempoAñadido;  //Debug.Log($"Tiempo añadido: {tiempoAñadido} segundos. Tiempo restante: {tiempoRestante}");
             relojesActivos--;
-
-            // Reproducir sonido cuando se aumenta el tiempo
             if (timeAddedSound != null && audioSource != null)
             {
                 audioSource.PlayOneShot(timeAddedSound);
@@ -124,7 +110,7 @@ public class GameManager : MonoBehaviour
     public void MostrarTextoOleadaTemporal(string mensaje)
     {
         textoOleadaTemporal.text = mensaje;
-        Invoke("LimpiarTextoOleadaTemporal", 3f); // Limpiar el texto después de 3 segundos
+        Invoke("LimpiarTextoOleadaTemporal", 3f); // Desaparecer Texto
     }
 
     void LimpiarTextoOleadaTemporal()

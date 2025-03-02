@@ -6,10 +6,8 @@ using UnityEngine.EventSystems;
 public class MainMenu : MonoBehaviour
 {
     public string NameScene;
-
-    // Sonidos
-    public AudioClip hoverSound; // Sonido cuando el mouse pasa por encima del botón
-    public AudioClip clickSound; // Sonido cuando se hace clic en el botón
+    public AudioClip hoverSound; 
+    public AudioClip clickSound; 
     private AudioSource audioSource;
 
     private void Start()
@@ -40,8 +38,7 @@ public class MainMenu : MonoBehaviour
 
     private System.Collections.IEnumerator DelayedAction(Button button)
     {
-        yield return new WaitForSeconds(0.2f); // Esperar 0.2 segundos
-
+        yield return new WaitForSeconds(1f); //otra espera, con todo lo dejo tambien
         if (button.name == "StartButton") StartGame();
         else if (button.name == "ExitButton") ExitGame();
     }

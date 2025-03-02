@@ -2,50 +2,41 @@ using UnityEngine;
 
 public class FadeOutObject : MonoBehaviour
 {
-    public float fadeDuration = 2f; // Duración del desvanecimiento en segundos
-    public float delayBeforeFade = 1f; // Tiempo de espera antes de comenzar el desvanecimiento
+    public float fadeDuration = 2f; 
+    public float delayBeforeFade = 1f; 
 
-    private SpriteRenderer spriteRenderer; // Para objetos 2D
-    private MeshRenderer meshRenderer;     // Para objetos 3D
+    private SpriteRenderer spriteRenderer; 
+    private MeshRenderer meshRenderer;    
     private float timer = 0f;
     private bool isFading = false;
 
     private void Start()
     {
-        // Intentar obtener el componente SpriteRenderer (para objetos 2D)
         spriteRenderer = GetComponent<SpriteRenderer>();
-
-        // Intentar obtener el componente MeshRenderer (para objetos 3D)
         meshRenderer = GetComponent<MeshRenderer>();
 
-        // Verificar si el objeto tiene un componente de renderizado
         if (spriteRenderer == null && meshRenderer == null)
         {
-            Debug.LogError("El objeto no tiene un SpriteRenderer ni un MeshRenderer.");
-            enabled = false; // Desactivar el script si no hay un componente de renderizado
+            enabled = false; // Desactivar el script 
         }
     }
 
     private void Update()
     {
-        // Esperar el tiempo de retraso antes de comenzar el desvanecimiento
+       
         if (!isFading && timer < delayBeforeFade)
         {
             timer += Time.deltaTime;
             return;
         }
 
-        // Comenzar el desvanecimiento
         if (!isFading)
         {
             isFading = true;
-            timer = 0f; // Reiniciar el temporizador para el desvanecimiento
+            timer = 0f; 
         }
-
-        // Calcular el alpha basado en el tiempo transcurrido
-        float alpha = Mathf.Lerp(1f, 0f, timer / fadeDuration);
-
-        // Aplicar el alpha al color del objeto
+       
+        float alpha = Mathf.Lerp(1f, 0f, timer / fadeDuration);  // Calcular el alpha basado en el tiempo transcurrido
         if (spriteRenderer != null)
         {
             Color color = spriteRenderer.color;
@@ -62,10 +53,7 @@ public class FadeOutObject : MonoBehaviour
             }
         }
 
-        // Incrementar el temporizador
         timer += Time.deltaTime;
-
-        // Destruir el objeto cuando el desvanecimiento haya terminado
         if (timer >= fadeDuration)
         {
             Destroy(gameObject);

@@ -13,14 +13,12 @@ public class AmmoRespawner : MonoBehaviour
     private void Start()
     {
         lastPlayerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
-
         InvokeRepeating("CheckPlayerMovement", 0f, 1f);
     }
 
     private void CheckPlayerMovement()
     {
         Vector3 currentPlayerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
-
         if (currentPlayerPosition != lastPlayerPosition)
         {
             if (!hasPlayerMoved)
@@ -38,7 +36,6 @@ public class AmmoRespawner : MonoBehaviour
         while (true)
         {
             SpawnAmmoBox();
-
             yield return new WaitForSeconds(respawnTime);
         }
     }
@@ -49,23 +46,15 @@ public class AmmoRespawner : MonoBehaviour
         {
             int randomIndex = Random.Range(0, spawnPoints.Length);
             Transform spawnPoint = spawnPoints[randomIndex];
-
-            // Verificar si hay algo en la posición de spawn
-            if (!IsPositionOccupied(spawnPoint.position))
+            if (!IsPositionOccupied(spawnPoint.position)) // Para saber si hay algo ...
             {
                 Instantiate(ammoBoxPrefab, spawnPoint.position, Quaternion.identity);
             }
         }
-        else
-        {
-            Debug.LogError("No hay puntos de respawn asignados en el AmmoRespawner.");
-        }
     }
-
-    // Método para verificar si una posición está ocupada
     private bool IsPositionOccupied(Vector3 position)
     {
         Collider[] colliders = Physics.OverlapSphere(position, 2f); // Radio 
-        return colliders.Length > 0; // Si hay colisiones, la posición está ocupada
+        return colliders.Length > 0; 
     }
 }

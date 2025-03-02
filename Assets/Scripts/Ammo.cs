@@ -2,22 +2,20 @@ using UnityEngine;
 
 public class AmmoBox : MonoBehaviour
 {
-    public int minAmmoAmount = 5;  // Cantidad mínima de munición
-    public int maxAmmoAmount = 15; // Cantidad máxima de munición
+    public int minAmmoAmount = 5;  
+    public int maxAmmoAmount = 15; 
 
-    // Variables para el efecto de levitación
-    public float levitationHeight = 0.5f; // Altura de la levitación
-    public float levitationSpeed = 1f; // Velocidad de la levitación
+    public float levitationHeight = 0.5f; 
+    public float levitationSpeed = 1f; 
     private Vector3 startPosition;
 
     private void Start()
     {
-        startPosition = transform.position; // Guardar la posición inicial
+        startPosition = transform.position; 
     }
 
     private void Update()
     {
-        // Efecto de levitación
         float newY = startPosition.y + Mathf.Sin(Time.time * levitationSpeed) * levitationHeight;
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
     }
@@ -29,8 +27,8 @@ public class AmmoBox : MonoBehaviour
             if (AmmoManager.Instance.CanRegenerateAmmo())
             {
                 int randomAmmoAmount = Random.Range(minAmmoAmount, maxAmmoAmount + 1);
-                AmmoManager.Instance.AddAmmo(randomAmmoAmount); // Añadir munición
-                Destroy(gameObject); // Destruir el objeto
+                AmmoManager.Instance.AddAmmo(randomAmmoAmount); 
+                Destroy(gameObject); 
             }
         }
     }

@@ -7,7 +7,6 @@ public class Bala : MonoBehaviour
     private new Rigidbody2D rigidbody;
     public float speed = 3;
     public float maxDistance = 10f; 
-
     private Vector2 initialPosition; 
 
     void Start()
@@ -26,13 +25,8 @@ public class Bala : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Mover la bala
         rigidbody.MovePosition(transform.position + transform.right * speed * Time.fixedDeltaTime);
-
-        // Calcular la distancia recorrida
         float distanceTraveled = Vector2.Distance(initialPosition, transform.position);
-
-        // Destruir la bala si supera la distancia máxima
         if (distanceTraveled >= maxDistance)
         {
             Destroy(gameObject);
