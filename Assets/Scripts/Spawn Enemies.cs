@@ -122,7 +122,7 @@ public class EnemySpawner : MonoBehaviour
         {
             esperandoSiguienteOleada = true;
             oleadaActual++;
-            multiplicadorVida *= 1.1f; // Aumentar la vida en un 10% por oleada
+            multiplicadorVida += 0.1f; // Aumentar el multiplicador en 0.1 por oleada
 
             // Mostrar el texto temporal de la oleada
             GameManager.Instance.MostrarTextoOleadaTemporal($"{oleadaActual}");

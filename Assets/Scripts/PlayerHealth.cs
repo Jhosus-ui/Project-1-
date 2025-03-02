@@ -21,6 +21,9 @@ public class PlayerHealth : MonoBehaviour
     public float damageScreenPulseIntensity = 1.1f; // Intensidad de la palpitación de la pantalla de daño
     public float damageScreenDuration = 0.5f; // Duración de la pantalla de daño antes de desaparecer
 
+    private Coroutine damageScreenPulseCoroutine; // Variable para rastrear la corrutina de la pantalla de daño
+    public CameraFollow cameraFollow; // Referencia al script de la cámara
+
     private void Start()
     {
         currentHealth = maxHealth; // Inicializar la vida al máximo
@@ -38,6 +41,11 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= damageAmount; // Reducir la vida
         Debug.Log("El jugador recibió daño. Vida actual: " + currentHealth);
         UpdateHealthUI(); // Actualizar la UI
+
+        if (cameraFollow != null)
+        {
+            cameraFollow.ShakeCamera();
+        }
 
         if (currentHealth <= 0)
         {
@@ -65,6 +73,13 @@ public class PlayerHealth : MonoBehaviour
     {
         Debug.Log("El jugador ha muerto.");
         GameManager.Instance.PlayerDied(); // Notificar al GameManager que el jugador ha muerto
+
+        // Detener la corrutina de la pantalla de daño si está activa
+        if (damageScreenPulseCoroutine != null)
+        {
+            StopCoroutine(damageScreenPulseCoroutine);
+            damageScreenPulseCoroutine = null;
+        }
 
         // Mantener la pantalla de daño con opacidad máxima
         SetDamageScreenAlpha(damageScreenStrongAlpha);
@@ -147,7 +162,13 @@ public class PlayerHealth : MonoBehaviour
         // Si el jugador tiene 2 o menos corazones, la pantalla de daño se mantiene visible y palpita
         else
         {
-            StartCoroutine(PulseDamageScreen(damageScreenBaseAlpha, damageScreenPulseIntensity));
+            // Detener la corrutina anterior si existe
+            if (damageScreenPulseCoroutine != null)
+            {
+                StopCoroutine(damageScreenPulseCoroutine);
+            }
+            // Iniciar la nueva corrutina y almacenar la referencia
+            damageScreenPulseCoroutine = StartCoroutine(PulseDamageScreen(damageScreenBaseAlpha, damageScreenPulseIntensity));
         }
     }
 
@@ -196,5 +217,18 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth); // Curar al jugador sin exceder la vida máxima
         UpdateHealthUI(); // Actualizar la UI de salud
         Debug.Log("El jugador se ha curado. Vida actual: " + currentHealth);
+
+        // Si la salud es mayor que 2, detener la palpitación de la pantalla de daño y ocultarla
+        if (currentHealth > 2)
+        {
+            if (damageScreenPulseCoroutine != null)
+            {
+                StopCoroutine(damageScreenPulseCoroutine);
+                damageScreenPulseCoroutine = null;
+            }
+            SetDamageScreenAlpha(0f); // Ocultar la pantalla de daño
+        }
     }
+
+
 }

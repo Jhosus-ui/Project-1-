@@ -37,7 +37,7 @@ public class AmmoManager : MonoBehaviour
     private void Start()
     {
         // Obtener la referencia al script de animaciones del arma
-        weaponAnimations = FindObjectOfType<WeaponAnimations>();
+        weaponAnimations = FindFirstObjectByType<WeaponAnimations>();
         if (weaponAnimations == null)
         {
             Debug.LogError("WeaponAnimations no encontrado en la escena.");
