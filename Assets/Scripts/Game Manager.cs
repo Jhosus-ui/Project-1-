@@ -132,7 +132,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("El jugador ha muerto.");
         isTimeUp = false;
-        SceneManager.LoadScene("GameOver");
+        SceneManager.LoadScene("Game Over");
     }
 
     public bool IsTimeUp()

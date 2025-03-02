@@ -23,6 +23,7 @@ public class PlayerHealth : MonoBehaviour
 
     private Coroutine damageScreenPulseCoroutine; // Variable para rastrear la corrutina de la pantalla de daño
     public CameraFollow cameraFollow; // Referencia al script de la cámara
+    private Animator animator;
 
     private void Start()
     {
@@ -32,6 +33,8 @@ public class PlayerHealth : MonoBehaviour
 
         // Inicializar la pantalla de daño como transparente
         SetDamageScreenAlpha(0f);
+
+        animator = GetComponent<Animator>();
     }
 
     public void TakeDamage(int damageAmount)
@@ -72,18 +75,24 @@ public class PlayerHealth : MonoBehaviour
     private void Die()
     {
         Debug.Log("El jugador ha muerto.");
-        GameManager.Instance.PlayerDied(); // Notificar al GameManager que el jugador ha muerto
 
-        // Detener la corrutina de la pantalla de daño si está activa
-        if (damageScreenPulseCoroutine != null)
+        // Reproducir la animación de muerte
+        if (animator != null)
         {
-            StopCoroutine(damageScreenPulseCoroutine);
-            damageScreenPulseCoroutine = null;
+            animator.SetTrigger("Dead"); // "Dead" es el nombre del trigger de la animación de muerte
         }
 
-        // Mantener la pantalla de daño con opacidad máxima
-        SetDamageScreenAlpha(damageScreenStrongAlpha);
-        StopAllCoroutines(); // Detener todas las corrutinas de palpitación
+        // Llamar a la corrutina para cambiar de escena después de la animación
+        StartCoroutine(CambiarEscenaDespuesDeAnimacion());
+    }
+
+    private IEnumerator CambiarEscenaDespuesDeAnimacion()
+    {
+        // Esperar a que termine la animación de muerte
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+
+        // Notificar al GameManager que el jugador ha muerto
+        GameManager.Instance.PlayerDied();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -33,7 +33,7 @@ public class GameOverScreen : MonoBehaviour
         }
 
         // Mostrar el puntaje final
-        scoreText.text = "Score: " + finalScore;
+        scoreText.text = "" + finalScore;
     }
 
     // Método para reiniciar el juego

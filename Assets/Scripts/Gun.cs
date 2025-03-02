@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ArmaMovimiento : MonoBehaviour
@@ -10,37 +8,36 @@ public class ArmaMovimiento : MonoBehaviour
     public new Camera camera;
     public Transform spawner;
     public GameObject balaPrefab;
+    public AudioClip shootSound; // Sonido de disparo
+    public AudioClip noAmmoSound; // Sonido cuando no hay balas
+    private AudioSource audioSource;
 
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>(); // Obtener el componente AudioSource
     }
 
     void Update()
     {
-        Disparar();
+        if (Input.GetButtonDown("Fire1")) Disparar();
         RotateTowardsMouse();
     }
 
     void Disparar()
     {
-        // Verificar si hay balas disponibles y si no se está recargando
-        if (Input.GetButtonDown("Fire1") && AmmoManager.Instance.currentAmmo > 0 && !AmmoManager.Instance.IsReloading())
+        if (AmmoManager.Instance.currentAmmo > 0 && !AmmoManager.Instance.IsReloading())
         {
             animator.SetTrigger("Shoot");
-
-            // Instanciar la bala en el punto de disparo
-            GameObject Bala = Instantiate(balaPrefab);
-            Bala.transform.position = spawner.position;
-            Bala.transform.rotation = transform.rotation;
-
-            // Gastar una bala
+            Instantiate(balaPrefab, spawner.position, transform.rotation);
             AmmoManager.Instance.UseAmmo();
+            audioSource.PlayOneShot(shootSound); // Reproducir el sonido de disparo
         }
-        else if (Input.GetButtonDown("Fire1") && AmmoManager.Instance.currentAmmo <= 0)
+        else if (AmmoManager.Instance.currentAmmo <= 0)
         {
             Debug.Log("No hay balas disponibles.");
+            audioSource.PlayOneShot(noAmmoSound); // Reproducir el sonido de "sin balas"
         }
     }
 
@@ -56,9 +53,6 @@ public class ArmaMovimiento : MonoBehaviour
         Vector3 mouseWorldPosition = camera.ScreenToWorldPoint(Input.mousePosition);
         Vector3 mouseDirection = mouseWorldPosition - transform.position;
         mouseDirection.z = 0;
-
-        float angle = (Vector3.SignedAngle(Vector3.right, mouseDirection, Vector3.forward) + 360) % 360;
-
-        return angle;
+        return (Vector3.SignedAngle(Vector3.right, mouseDirection, Vector3.forward) + 360) % 360;
     }
 }

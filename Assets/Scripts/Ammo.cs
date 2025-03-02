@@ -10,9 +10,15 @@ public class AmmoBox : MonoBehaviour
     public float levitationSpeed = 1f; // Velocidad de la levitación
     private Vector3 startPosition;
 
+    // Sonidos
+    public AudioClip collectSound; // Sonido cuando el jugador recolecta el item
+    public AudioClip fullAmmoSound; // Sonido cuando la munición total está llena
+    private AudioSource audioSource;
+
     private void Start()
     {
         startPosition = transform.position; // Guardar la posición inicial
+        audioSource = GetComponent<AudioSource>(); // Obtener el componente AudioSource
     }
 
     private void Update()
@@ -26,10 +32,27 @@ public class AmmoBox : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            if (AmmoManager.Instance.CanRegenerateAmmo())
+            // Verificar si la munición total está llena
+            if (AmmoManager.Instance.totalAmmo >= AmmoManager.Instance.maxTotalAmmo)
             {
-                int randomAmmoAmount = Random.Range(minAmmoAmount, maxAmmoAmount + 1); // Genera un valor aleatorio entre minAmmoAmount y maxAmmoAmount
-                AmmoManager.Instance.AddAmmo(randomAmmoAmount); //Checkear el respawn
+                // Reproducir sonido de munición llena
+                if (fullAmmoSound != null && audioSource != null)
+                {
+                    audioSource.PlayOneShot(fullAmmoSound);
+                }
+            }
+            else
+            {
+                // Recolectar munición
+                int randomAmmoAmount = Random.Range(minAmmoAmount, maxAmmoAmount + 1);
+                AmmoManager.Instance.AddAmmo(randomAmmoAmount);
+
+                // Reproducir sonido de recolección
+                if (collectSound != null && audioSource != null)
+                {
+                    audioSource.PlayOneShot(collectSound);
+                }
+
                 Destroy(gameObject);
             }
         }

@@ -12,6 +12,10 @@ public class EnemySpawner : MonoBehaviour
     public float intervaloEntreEnemigos = 0.5f; // Tiempo entre la aparición de cada enemigo
     public float tiempoEntreOleadas = 10f; // Tiempo de espera entre oleadas
 
+    // Sonidos
+    public AudioClip startWaveSound; // Sonido cuando comienza una oleada
+    private AudioSource audioSource;
+
     // Variables privadas
     private int currentEnemies = 0;
     private bool juegoIniciado = false;
@@ -24,7 +28,6 @@ public class EnemySpawner : MonoBehaviour
 
     void Awake()
     {
-        // Implementación del Singleton
         if (Instance == null)
         {
             Instance = this;
@@ -38,8 +41,8 @@ public class EnemySpawner : MonoBehaviour
 
     void Start()
     {
-        // Iniciar la espera para la primera oleada
-        Invoke(nameof(IniciarPrimeraOleada), startDelay);
+        audioSource = GetComponent<AudioSource>(); // Obtener el componente AudioSource
+        Invoke(nameof(IniciarPrimeraOleada), startDelay); // Iniciar la espera para la primera oleada
     }
 
     void IniciarPrimeraOleada()
@@ -49,23 +52,23 @@ public class EnemySpawner : MonoBehaviour
             juegoIniciado = true;
         }
 
-        // Iniciar la primera oleada
+        if (startWaveSound != null)
+        {
+            audioSource.PlayOneShot(startWaveSound);
+        }
+
         StartCoroutine(GenerarOleadaEnemigosGradualmente());
     }
 
     IEnumerator GenerarOleadaEnemigosGradualmente()
     {
         int cantidadEnemigos = minEnemies + (oleadaActual * incrementoEnemigosPorOleada);
-
-        // Notificar al GameManager para actualizar el texto de la oleada
         GameManager.Instance.ActualizarTextoOleada($"Round: {oleadaActual}");
         GameManager.Instance.MostrarTextoOleadaTemporal($"{oleadaActual}");
 
         for (int i = 0; i < cantidadEnemigos; i++)
         {
             GenerarEnemigo();
-
-            // Esperar un tiempo antes de generar el próximo enemigo
             yield return new WaitForSeconds(intervaloEntreEnemigos);
         }
     }
@@ -74,31 +77,21 @@ public class EnemySpawner : MonoBehaviour
     {
         if (enemyPrefab != null && spawnPoints.Length > 0)
         {
-            // Seleccionar un punto de spawn aleatorio
             Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-
-            // Instanciar el enemigo en el punto de spawn
             GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
-
-            // Verificar si el enemigo se instanció correctamente
             if (enemy != null)
             {
                 Debug.Log($"Enemigo generado en {spawnPoint.position}");
-
-                // Obtener el componente Enemy del enemigo generado
                 Enemy enemyScript = enemy.GetComponent<Enemy>();
 
                 if (enemyScript != null)
                 {
-                    // Aplicar multiplicador de vida
                     enemyScript.SetMultiplicadorVida(multiplicadorVida);
                 }
                 else
                 {
                     Debug.LogError("El prefab del enemigo no tiene el componente Enemy.");
                 }
-
-                // Incrementar el contador de enemigos activos
                 currentEnemies++;
             }
             else
@@ -116,18 +109,17 @@ public class EnemySpawner : MonoBehaviour
     {
         currentEnemies--;
         ScoreManager.Instance.AddScore(13);
-
-        // Verificar si todos los enemigos de la oleada actual fueron derrotados
         if (currentEnemies <= 0 && !esperandoSiguienteOleada)
         {
             esperandoSiguienteOleada = true;
             oleadaActual++;
             multiplicadorVida += 0.1f; // Aumentar el multiplicador en 0.1 por oleada
 
-            // Mostrar el texto temporal de la oleada
             GameManager.Instance.MostrarTextoOleadaTemporal($"{oleadaActual}");
-
-            // Esperar 10 segundos antes de la siguiente oleada
+            if (startWaveSound != null)
+            {
+                audioSource.PlayOneShot(startWaveSound);
+            }
             Invoke(nameof(ComenzarNuevaOleada), tiempoEntreOleadas);
         }
     }
@@ -135,6 +127,6 @@ public class EnemySpawner : MonoBehaviour
     void ComenzarNuevaOleada()
     {
         esperandoSiguienteOleada = false;
-        StartCoroutine(GenerarOleadaEnemigosGradualmente()); // Usamos la corutina
+        StartCoroutine(GenerarOleadaEnemigosGradualmente());
     }
 }
