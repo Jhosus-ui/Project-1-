@@ -151,7 +151,7 @@ public class GameManager : MonoBehaviour
 
     private bool IsPositionOccupied(Vector3 position)
     {
-        Collider[] colliders = Physics.OverlapSphere(position, 2f); // Radio de 2 unidades
+        Collider[] colliders = Physics.OverlapSphere(position, 5f); // Radio de  unidades
         return colliders.Length > 0; // Si hay colisiones, la posición está ocupada
     }
 }

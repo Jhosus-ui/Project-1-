@@ -126,7 +126,7 @@ public class HealthM : MonoBehaviour
     }
     private bool IsPositionOccupied(Vector3 position)
     {
-        Collider[] colliders = Physics.OverlapSphere(position, 2f); // Radio 
+        Collider[] colliders = Physics.OverlapSphere(position, 5f); // Radio 
         return colliders.Length > 0; 
     }
 }

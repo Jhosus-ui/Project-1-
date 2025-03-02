@@ -58706,12 +58706,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tiempoInicial: 90
-  tiempoMinimoReloj: 15
+  tiempoMinimoReloj: 14
   tiempoMaximoReloj: 30
   limiteSuperiorTiempo: 130
   limiteInferiorTiempo: 5
-  intervaloMinimoGeneracion: 7
-  intervaloMaximoGeneracion: 17
+  intervaloMinimoGeneracion: 15
+  intervaloMaximoGeneracion: 25
   textoReloj: {fileID: 1949028281}
   textoOleada: {fileID: 854558535}
   textoOleadaTemporal: {fileID: 962072472}
@@ -58751,7 +58751,7 @@ MonoBehaviour:
   - {fileID: 1608309257}
   - {fileID: 1821707156}
   - {fileID: 1072716524}
-  respawnTime: 20
+  respawnTime: 25
 --- !u!114 &2025043300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58846,16 +58846,16 @@ MonoBehaviour:
   - {fileID: 2119674425}
   - {fileID: 1325307518}
   - {fileID: 1448171652}
-  healthMinSpawnTime: 25
-  healthMaxSpawnTime: 35
-  healthInitialDelay: 35
+  healthMinSpawnTime: 40
+  healthMaxSpawnTime: 60
+  healthInitialDelay: 70
   secondPrefab: {fileID: 7250358776666317635, guid: d534cf2fff1c47a49a1bacefc32d4dc3, type: 3}
   secondPrefabSpawnPoints:
   - {fileID: 1886919735}
   - {fileID: 1391025112}
-  secondPrefabMinSpawnTime: 45
-  secondPrefabMaxSpawnTime: 60
-  secondPrefabInitialDelay: 60
+  secondPrefabMinSpawnTime: 65
+  secondPrefabMaxSpawnTime: 90
+  secondPrefabInitialDelay: 130
 --- !u!114 &2025043304
 MonoBehaviour:
   m_ObjectHideFlags: 0
