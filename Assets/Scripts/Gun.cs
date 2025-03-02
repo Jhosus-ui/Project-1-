@@ -8,15 +8,15 @@ public class ArmaMovimiento : MonoBehaviour
     public new Camera camera;
     public Transform spawner;
     public GameObject balaPrefab;
-    public AudioClip shootSound; // Sonido de disparo
-    public AudioClip noAmmoSound; // Sonido cuando no hay balas
+    public AudioClip shootSound; 
+    public AudioClip noAmmoSound; 
     private AudioSource audioSource;
 
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>(); // Obtener el componente AudioSource
+        audioSource = GetComponent<AudioSource>(); 
     }
 
     void Update()
@@ -33,12 +33,11 @@ public class ArmaMovimiento : MonoBehaviour
             animator.SetTrigger("Shoot");
             Instantiate(balaPrefab, spawner.position, transform.rotation);
             AmmoManager.Instance.UseAmmo();
-            audioSource.PlayOneShot(shootSound); // Reproducir el sonido de disparo
+            audioSource.PlayOneShot(shootSound); 
         }
         else if (AmmoManager.Instance.currentAmmo <= 0)
         {
-            Debug.Log("No hay balas disponibles.");
-            audioSource.PlayOneShot(noAmmoSound); // Reproducir el sonido de "sin balas"
+            audioSource.PlayOneShot(noAmmoSound); //Balas Disponibles
         }
     }
 

@@ -5,23 +5,19 @@ using UnityEngine.EventSystems;
 
 public class PauseManager : MonoBehaviour
 {
-    public GameObject pauseText;       // Referencia al texto "Juego Pausado"
-    public Button pauseButton;         // Referencia al botón de pausa
-    public Button menuButton;          // Referencia al botón "Ir al Menú"
-    public string menuSceneName = "MainMenu"; // Nombre de la escena del menú
+    public GameObject pauseText;
+    public Button pauseButton;
+    public Button menuButton;
+    public string menuSceneName = "MainMenu";
 
-    // Sonidos
-    public AudioClip hoverSound; // Sonido cuando el mouse pasa por encima del botón
-    public AudioClip clickSound; // Sonido cuando se hace clic en el botón
+    public AudioClip hoverSound;
+    public AudioClip clickSound;
     private AudioSource audioSource;
-
     public static bool isPaused = false;
 
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
-
-        // Configurar los sonidos para los botones
         AddHoverEffect(pauseButton);
         AddHoverEffect(menuButton);
 
@@ -39,19 +35,12 @@ public class PauseManager : MonoBehaviour
             audioSource.PlayOneShot(clickSound);
         }
 
-        StartCoroutine(DelayedAction(action));
-    }
-
-    private System.Collections.IEnumerator DelayedAction(System.Action action)
-    {
-        yield return new WaitForSeconds(0.2f); // Esperar 0.2 segundos
-        action.Invoke();
+        action.Invoke(); // Ejecutar la acción inmediatamente sin retraso
     }
 
     private void AddHoverEffect(Button button)
     {
         EventTrigger trigger = button.gameObject.AddComponent<EventTrigger>();
-
         var pointerEnter = new EventTrigger.Entry();
         pointerEnter.eventID = EventTriggerType.PointerEnter;
         pointerEnter.callback.AddListener((data) => OnPointerEnterButton(button));
@@ -72,6 +61,9 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = isPaused ? 0f : 1f;
         pauseText?.SetActive(isPaused);
         menuButton?.gameObject.SetActive(isPaused);
+
+        // Asegurarse de que el botón de pausa esté siempre activo
+        pauseButton.interactable = true;
     }
 
     public static bool IsPaused() => isPaused;

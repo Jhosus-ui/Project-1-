@@ -4,55 +4,55 @@ using System.Collections;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int maxHealth = 4; // Vida máxima del jugador
-    private int currentHealth; // Vida actual del jugador
-    public float immunityTime = 1f; // Tiempo de inmunidad después de recibir daño
-    private bool isImmune = false; // Indica si el jugador es inmune
+    public int maxHealth = 4; 
+    private int currentHealth; 
+    public float immunityTime = 1f;
+    private bool isImmune = false; 
 
-    public Image[] heartImages; // Imágenes de los corazones (UI)
-    public float normalPulseIntensity = 1.1f; // Intensidad de la palpitación normal (2 corazones)
-    public float strongPulseIntensity = 1.2f; // Intensidad de la palpitación fuerte (1 corazón)
-    public float pulseSpeed = 2f; // Velocidad de la palpitación
+    public Image[] heartImages; 
+    public float normalPulseIntensity = 1.1f; 
+    public float strongPulseIntensity = 1.2f; 
+    public float pulseSpeed = 2f; 
 
-    // Variables para la pantalla de daño
-    public Image damageScreen; // Pantalla de daño (UI)
-    public float damageScreenBaseAlpha = 0.3f; // Opacidad base de la pantalla de daño
-    public float damageScreenStrongAlpha = 0.6f; // Opacidad fuerte de la pantalla de daño
-    public float damageScreenPulseIntensity = 1.1f; // Intensidad de la palpitación de la pantalla de daño
-    public float damageScreenDuration = 0.5f; // Duración de la pantalla de daño antes de desaparecer
+    public Image damageScreen; 
+    public float damageScreenBaseAlpha = 0.3f; 
+    public float damageScreenStrongAlpha = 0.6f; 
+    public float damageScreenPulseIntensity = 1.1f; 
+    public float damageScreenDuration = 0.5f; 
 
-    private Coroutine damageScreenPulseCoroutine; // Variable para rastrear la corrutina de la pantalla de daño
-    public CameraFollow cameraFollow; // Referencia al script de la cámara
+    private Coroutine damageScreenPulseCoroutine; 
+    public CameraFollow cameraFollow; 
     private Animator animator;
 
-    // Sonidos
-    public AudioClip damageSound; // Sonido cuando el jugador recibe daño
-    public AudioClip healSound; // Sonido cuando el jugador se cura
-    public AudioClip twoHeartsPulseSound; // Sonido cuando comienzan las palpitaciones a dos corazones
-    public AudioClip lowHealthPulseSound; // Sonido cuando queda menos de dos corazones
+    public AudioClip damageSound; 
+    public AudioClip healSound; 
+    public AudioClip twoHeartsPulseSound; 
+    public AudioClip lowHealthPulseSound; 
     private AudioSource audioSource;
 
-    private bool isPlayingLowHealthSound = false; // Controlar si el sonido de baja salud está en reproducción
+    private bool isPlayingLowHealthSound = false; 
 
     private void Start()
     {
-        currentHealth = maxHealth; // Inicializar la vida al máximo
-        UpdateHealthUI(); // Actualizar la UI al inicio
+        currentHealth = maxHealth; 
+        UpdateHealthUI(); 
         Debug.Log("Vida inicial del jugador: " + currentHealth);
-        // Inicializar la pantalla de daño como transparente
+
         SetDamageScreenAlpha(0f);
+
         animator = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>(); // Obtener el componente AudioSource
+        audioSource = GetComponent<AudioSource>(); 
     }
 
     public void TakeDamage(int damageAmount)
     {
-        if (isImmune) return; // Si el jugador es inmune, no recibe daño
+        if (isImmune) return; 
 
-        currentHealth -= damageAmount; // Reducir la vida
+        currentHealth -= damageAmount; 
         Debug.Log("El jugador recibió daño. Vida actual: " + currentHealth);
-        UpdateHealthUI(); // Actualizar la UI
+        UpdateHealthUI(); 
 
+        
         if (damageSound != null && audioSource != null)
         {
             audioSource.PlayOneShot(damageSound);
@@ -65,23 +65,23 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            Die(); // Si la vida llega a 0, el jugador muere
+            Die(); 
         }
         else
         {
-            StartCoroutine(ActivateImmunity()); // Activar inmunidad temporal
-            ShowDamageScreen(); // Mostrar la pantalla de daño
+            StartCoroutine(ActivateImmunity()); 
+            ShowDamageScreen(); 
         }
     }
 
     private IEnumerator ActivateImmunity()
     {
-        isImmune = true; // Activar inmunidad
+        isImmune = true; 
         Debug.Log("Inmunidad activada.");
 
-        yield return new WaitForSeconds(immunityTime); // Esperar el tiempo de inmunidad
+        yield return new WaitForSeconds(immunityTime); 
 
-        isImmune = false; // Desactivar inmunidad
+        isImmune = false; 
         Debug.Log("Inmunidad desactivada.");
     }
 
@@ -89,9 +89,10 @@ public class PlayerHealth : MonoBehaviour
     {
         Debug.Log("El jugador ha muerto.");
 
+      
         if (animator != null)
         {
-            animator.SetTrigger("Dead"); // "Dead" es el nombre del trigger de la animación de muerte
+            animator.SetTrigger("Dead"); 
         }
 
         StartCoroutine(CambiarEscenaDespuesDeAnimacion());
@@ -99,21 +100,23 @@ public class PlayerHealth : MonoBehaviour
 
     private IEnumerator CambiarEscenaDespuesDeAnimacion()
     {
+
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+
         GameManager.Instance.PlayerDied();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy")) // Si colisiona con un enemigo
+        if (collision.CompareTag("Enemy")) 
         {
-            TakeDamage(1); // Recibir daño
+            TakeDamage(1); 
         }
     }
 
     private void UpdateHealthUI()
     {
-
+        
         for (int i = 0; i < heartImages.Length; i++)
         {
             heartImages[i].gameObject.SetActive(i < currentHealth);
@@ -121,25 +124,25 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentHealth == 2)
         {
-            StartCoroutine(PulseHearts(normalPulseIntensity)); // Palpitación suave
-            PlayLoopingSound(twoHeartsPulseSound); // Reproducir sonido de dos corazones en loop
+            StartCoroutine(PulseHearts(normalPulseIntensity)); 
+            PlayLoopingSound(twoHeartsPulseSound); 
         }
         else if (currentHealth == 1)
         {
-            StartCoroutine(PulseHearts(strongPulseIntensity)); // Palpitación fuerte
-            PlayLoopingSound(lowHealthPulseSound); // Reproducir sonido de baja salud en loop
+            StartCoroutine(PulseHearts(strongPulseIntensity)); 
+            PlayLoopingSound(lowHealthPulseSound); 
         }
         else if (currentHealth > 2 && isPlayingLowHealthSound)
         {
-            StopLoopingSound(); // Detener los sonidos si el jugador se cura
+            StopLoopingSound(); 
         }
     }
 
     private IEnumerator PulseHearts(float intensity)
     {
-        while (currentHealth <= 2) // Mientras el jugador tenga 2 o menos corazones
+        while (currentHealth <= 2) 
         {
-
+            
             foreach (var heart in heartImages)
             {
                 if (heart.gameObject.activeSelf)
@@ -148,8 +151,9 @@ public class PlayerHealth : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSeconds(1f / pulseSpeed); // Esperar un momento
+            yield return new WaitForSeconds(1f / pulseSpeed); 
 
+            // Volver a la escala normal
             foreach (var heart in heartImages)
             {
                 if (heart.gameObject.activeSelf)
@@ -158,51 +162,56 @@ public class PlayerHealth : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSeconds(1f / pulseSpeed); // Esperar un momento
+            yield return new WaitForSeconds(1f / pulseSpeed); 
         }
     }
 
-    private void ShowDamageScreen()
+    private void ShowDamageScreen() //La implementacion de este 
     {
         SetDamageScreenAlpha(damageScreenBaseAlpha);
 
-        // Si el jugador tiene más de 2 corazones, la pantalla de daño desaparece después de un tiempo
         if (currentHealth > 2)
         {
             StartCoroutine(HideDamageScreenAfterDelay(damageScreenDuration));
         }
-        // Si el jugador tiene 2 o menos corazones, la pantalla de daño se mantiene visible y palpita
+
         else
         {
             if (damageScreenPulseCoroutine != null)
             {
                 StopCoroutine(damageScreenPulseCoroutine);
             }
+
             damageScreenPulseCoroutine = StartCoroutine(PulseDamageScreen(damageScreenBaseAlpha, damageScreenPulseIntensity));
         }
     }
 
     private IEnumerator HideDamageScreenAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(delay); // Esperar el tiempo de duración
-        SetDamageScreenAlpha(0f); // Ocultar la pantalla de daño
+        yield return new WaitForSeconds(delay); 
+        SetDamageScreenAlpha(0f); 
     }
 
     private IEnumerator PulseDamageScreen(float targetAlpha, float pulseIntensity)
     {
-        while (currentHealth <= 2) // Mientras el jugador tenga 2 o menos corazones
+        while (currentHealth <= 2) 
         {
+           
             damageScreen.transform.localScale = Vector3.one * pulseIntensity;
             SetDamageScreenAlpha(targetAlpha);
+
             yield return new WaitForSeconds(1f / pulseSpeed); 
+
             damageScreen.transform.localScale = Vector3.one;
             SetDamageScreenAlpha(targetAlpha * 0.8f); 
+
             yield return new WaitForSeconds(1f / pulseSpeed); 
         }
     }
-    private void SetDamageScreenAlpha(float alpha)
+
+    private void SetDamageScreenAlpha(float alpha) //Chequear esto es muy delicado 
     {
-        // Ajustar la opacidad de la pantalla de daño
+      
         if (damageScreen != null)
         {
             Color color = damageScreen.color;
@@ -213,18 +222,20 @@ public class PlayerHealth : MonoBehaviour
 
     public bool CanHeal()
     {
-        return currentHealth < maxHealth; // Verificar si el jugador puede curarse
+        return currentHealth < maxHealth; 
     }
 
-    public void Heal(int amount)
+    public void Heal(int amount) //Mecanica para curacion
     {
-        currentHealth = Mathf.Min(currentHealth + amount, maxHealth); // Curar al jugador sin exceder la vida máxima
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth); 
         UpdateHealthUI(); 
         Debug.Log("El jugador se ha curado. Vida actual: " + currentHealth);
+
         if (healSound != null && audioSource != null)
         {
             audioSource.PlayOneShot(healSound);
         }
+
         if (currentHealth > 2)
         {
             if (damageScreenPulseCoroutine != null)
@@ -241,18 +252,18 @@ public class PlayerHealth : MonoBehaviour
         if (sound != null && audioSource != null && !isPlayingLowHealthSound)
         {
             audioSource.clip = sound;
-            audioSource.loop = true; // Reproducir en loop
+            audioSource.loop = true; 
             audioSource.Play();
             isPlayingLowHealthSound = true;
         }
     }
 
-    private void StopLoopingSound()
+    private void StopLoopingSound() //Sonidos 
     {
         if (audioSource != null && isPlayingLowHealthSound)
         {
             audioSource.Stop();
-            audioSource.loop = false; // Desactivar el loop
+            audioSource.loop = false; 
             isPlayingLowHealthSound = false;
         }
     }

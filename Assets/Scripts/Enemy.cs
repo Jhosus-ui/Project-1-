@@ -8,17 +8,15 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Animator animator;
 
-    // Variables de vida
     public float minHealth = 1;
     public float maxHealth = 3;
     public float currentHealth;
     private float multiplicadorVida = 1.0f;
 
-    // Sonidos
-    public AudioClip deathSound; // Sonido de muerte
-    public AudioClip[] zombieSounds; // Sonidos aleatorios del zombie
-    public float soundRange = 5f; // Rango para reproducir sonidos
-    public float soundCooldown = 3f; // Tiempo entre sonidos
+    public AudioClip deathSound; 
+    public AudioClip[] zombieSounds;
+    public float soundRange = 5f;
+    public float soundCooldown = 3f; 
     private float lastSoundTime;
     private AudioSource audioSource;
 
@@ -65,7 +63,6 @@ public class Enemy : MonoBehaviour
     void InicializarVida()
     {
         currentHealth = Mathf.RoundToInt(Random.Range(minHealth, maxHealth + 1) * multiplicadorVida);
-        Debug.Log($"Enemigo generado con {currentHealth} de vida.");
     }
 
     public void SetMultiplicadorVida(float multiplicador)
@@ -83,8 +80,6 @@ public class Enemy : MonoBehaviour
     public void Morir()
     {
         agent.enabled = false;
-
-        // Reproducir el sonido de muerte
         if (deathSound != null && audioSource != null)
         {
             audioSource.PlayOneShot(deathSound);
@@ -106,10 +101,6 @@ public class Enemy : MonoBehaviour
         {
             EnemySpawner.Instance.EnemigoDerrotado();
         }
-        else
-        {
-            Debug.LogWarning("EnemySpawner.Instance es null.");
-        }
 
         Destroy(gameObject);
     }
@@ -126,21 +117,16 @@ public class Enemy : MonoBehaviour
     void ReproducirSonidoAleatorio()
     {
         if (player == null || zombieSounds == null || zombieSounds.Length == 0) return;
-
-        // Calcular la distancia al jugador
         float distanciaAlJugador = Vector3.Distance(transform.position, player.transform.position);
 
-        // Verificar si el jugador está dentro del rango y si ha pasado el tiempo de cooldown
         if (distanciaAlJugador <= soundRange && Time.time - lastSoundTime >= soundCooldown)
         {
-            // Reproducir un sonido aleatorio
             AudioClip sonidoAleatorio = zombieSounds[Random.Range(0, zombieSounds.Length)];
             if (sonidoAleatorio != null && audioSource != null)
             {
                 audioSource.PlayOneShot(sonidoAleatorio);
             }
 
-            // Actualizar el tiempo del último sonido
             lastSoundTime = Time.time;
         }
     }

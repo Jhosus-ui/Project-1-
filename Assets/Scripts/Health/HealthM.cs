@@ -7,16 +7,16 @@ public class HealthM : MonoBehaviour
 
     public GameObject healthPrefab;
     public Transform[] healthSpawnPoints;
-    public float healthMinSpawnTime = 10f;
-    public float healthMaxSpawnTime = 20f;
-    public float healthInitialDelay = 10f;
+    public float healthMinSpawnTime = 10f; //Tiempo Minimo
+    public float healthMaxSpawnTime = 20f; // T. MAximo 
+    public float healthInitialDelay = 10f; 
     private int currentHealthCount = 0;
     private const int maxHealthCount = 2;
 
     public GameObject secondPrefab;
     public Transform[] secondPrefabSpawnPoints;
-    public float secondPrefabMinSpawnTime = 15f;
-    public float secondPrefabMaxSpawnTime = 25f;
+    public float secondPrefabMinSpawnTime = 15f; //Tiempo Minimo
+    public float secondPrefabMaxSpawnTime = 25f; // T. MAximo 
     public float secondPrefabInitialDelay = 15f;
     private int currentSecondPrefabCount = 0;
     private const int maxSecondPrefabCount = 1;
@@ -43,7 +43,6 @@ public class HealthM : MonoBehaviour
     private IEnumerator WaitForPlayerMovement()
     {
         yield return new WaitUntil(() => playerHasMoved);
-
         StartCoroutine(StartHealthGenerationAfterDelay());
         StartCoroutine(StartSecondPrefabGenerationAfterDelay());
     }
@@ -65,7 +64,6 @@ public class HealthM : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(healthMinSpawnTime, healthMaxSpawnTime));
-
             if (currentHealthCount < maxHealthCount)
             {
                 SpawnHealth();
@@ -78,7 +76,6 @@ public class HealthM : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(secondPrefabMinSpawnTime, secondPrefabMaxSpawnTime));
-
             if (currentSecondPrefabCount < maxSecondPrefabCount)
             {
                 SpawnSecondPrefab();
@@ -91,9 +88,7 @@ public class HealthM : MonoBehaviour
         if (healthSpawnPoints.Length == 0) return;
 
         Transform spawnPoint = healthSpawnPoints[Random.Range(0, healthSpawnPoints.Length)];
-
-        // Verificar si la posición está ocupada
-        if (!IsPositionOccupied(spawnPoint.position))
+        if (!IsPositionOccupied(spawnPoint.position)) // Para la posición está ocupada
         {
             Instantiate(healthPrefab, spawnPoint.position, Quaternion.identity);
             currentHealthCount++;
@@ -105,9 +100,7 @@ public class HealthM : MonoBehaviour
         if (secondPrefabSpawnPoints.Length == 0) return;
 
         Transform spawnPoint = secondPrefabSpawnPoints[Random.Range(0, secondPrefabSpawnPoints.Length)];
-
-        // Verificar si la posición está ocupada
-        if (!IsPositionOccupied(spawnPoint.position))
+        if (!IsPositionOccupied(spawnPoint.position)) // Para la posición está ocupada
         {
             Instantiate(secondPrefab, spawnPoint.position, Quaternion.identity);
             currentSecondPrefabCount++;
@@ -131,11 +124,9 @@ public class HealthM : MonoBehaviour
             playerHasMoved = true;
         }
     }
-
-    // Método para verificar si una posición está ocupada
     private bool IsPositionOccupied(Vector3 position)
     {
-        Collider[] colliders = Physics.OverlapSphere(position, 2f); // Radio 
-        return colliders.Length > 0; // Si hay colisiones, la posición está ocupada
+        Collider[] colliders = Physics.OverlapSphere(position, 5f); // Radio 
+        return colliders.Length > 0; 
     }
 }

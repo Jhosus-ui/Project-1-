@@ -6,29 +6,23 @@ using UnityEngine.EventSystems;
 
 public class GameOverScreen : MonoBehaviour
 {
-    public TMP_Text resultText; // Texto que muestra "Round Finished" o "You have died"
-    public TMP_Text scoreText; // Texto que muestra el puntaje final
-    public string mainMenuScene = "MainMenu"; // Nombre de la escena del menú principal
-    public string gameScene = "GameScene"; // Nombre de la escena del juego
+    public TMP_Text resultText; // Mensaje Final
+    public TMP_Text scoreText; // Tu puntaje
+    public string mainMenuScene = "MainMenu"; 
+    public string gameScene = "GameScene"; 
 
-    // Sonidos
-    public AudioClip hoverSound; // Sonido cuando el mouse pasa por encima del botón
-    public AudioClip clickSound; // Sonido cuando se hace clic en el botón
+    public AudioClip hoverSound; 
+    public AudioClip clickSound; 
     private AudioSource audioSource;
 
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
-
-        // Obtener el resultado del juego y el puntaje final desde el GameManager
         bool isTimeUp = GameManager.Instance.IsTimeUp();
         int finalScore = ScoreManager.Instance.score;
 
-        // Configurar los textos
         resultText.text = isTimeUp ? "Round Finished" : "You have died";
         scoreText.text = finalScore.ToString();
-
-        // Configurar los sonidos para los botones
         ConfigureButtons();
     }
 
@@ -54,8 +48,7 @@ public class GameOverScreen : MonoBehaviour
 
     private System.Collections.IEnumerator DelayedAction(Button button)
     {
-        yield return new WaitForSeconds(0.2f); // Esperar 0.2 segundos
-
+        yield return new WaitForSeconds(0.1f); //Una espera talvez funcione pero lo dejo...
         if (button.name == "RestartButton") RestartGame();
         else if (button.name == "MainMenuButton") ExitToMainMenu();
     }
