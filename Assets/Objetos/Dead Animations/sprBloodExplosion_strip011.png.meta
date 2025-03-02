@@ -1,0 +1,608 @@
+fileFormatVersion: 2
+guid: f71296dbe4afcf847abc6f175a7ffbf5
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4670199242162924815
+    second: sprBloodExplosion_strip011_0
+  - first:
+      213: -7576229899980374231
+    second: sprBloodExplosion_strip011_1
+  - first:
+      213: -6056498979931942848
+    second: sprBloodExplosion_strip011_2
+  - first:
+      213: -4027246355609806102
+    second: sprBloodExplosion_strip011_3
+  - first:
+      213: 5794719744766766073
+    second: sprBloodExplosion_strip011_4
+  - first:
+      213: 995652035157313462
+    second: sprBloodExplosion_strip011_5
+  - first:
+      213: -3213718831640989563
+    second: sprBloodExplosion_strip011_6
+  - first:
+      213: -8712700152388323529
+    second: sprBloodExplosion_strip011_7
+  - first:
+      213: 1378328394105469298
+    second: sprBloodExplosion_strip011_8
+  - first:
+      213: -1267313374800850238
+    second: sprBloodExplosion_strip011_9
+  - first:
+      213: 3586256255249448280
+    second: sprBloodExplosion_strip011_10
+  - first:
+      213: 3145517266143024406
+    second: sprBloodExplosion_strip011_11
+  - first:
+      213: 2523497362346910510
+    second: sprBloodExplosion_strip011_12
+  - first:
+      213: 1724120077534481191
+    second: sprBloodExplosion_strip011_13
+  - first:
+      213: -6768473660497217029
+    second: sprBloodExplosion_strip011_14
+  - first:
+      213: 2938527259784062366
+    second: sprBloodExplosion_strip011_15
+  - first:
+      213: 3726483525700940532
+    second: sprBloodExplosion_strip011_16
+  - first:
+      213: 6008022684365382566
+    second: sprBloodExplosion_strip011_17
+  - first:
+      213: 529112545257293590
+    second: sprBloodExplosion_strip011_18
+  - first:
+      213: 293842038138149122
+    second: sprBloodExplosion_strip011_19
+  - first:
+      213: 150827409454853739
+    second: sprBloodExplosion_strip011_20
+  - first:
+      213: 570920806013884587
+    second: sprBloodExplosion_strip011_21
+  - first:
+      213: -6305322195154434541
+    second: sprBloodExplosion_strip011_22
+  - first:
+      213: 5952360530699741612
+    second: sprBloodExplosion_strip011_23
+  - first:
+      213: -4904789724627360645
+    second: sprBloodExplosion_strip011_24
+  - first:
+      213: -4762327766402496721
+    second: sprBloodExplosion_strip011_25
+  - first:
+      213: -1132474515745584480
+    second: sprBloodExplosion_strip011_26
+  - first:
+      213: 72116395096163829
+    second: sprBloodExplosion_strip011_27
+  - first:
+      213: 2642228789461896148
+    second: sprBloodExplosion_strip011_28
+  - first:
+      213: -3033869906095412156
+    second: sprBloodExplosion_strip011_29
+  - first:
+      213: 2062907016677413261
+    second: sprBloodExplosion_strip011_30
+  - first:
+      213: 6310728255813253073
+    second: sprBloodExplosion_strip011_31
+  - first:
+      213: 911858621054196882
+    second: sprBloodExplosion_strip011_32
+  - first:
+      213: 6081312333778977794
+    second: sprBloodExplosion_strip011_33
+  - first:
+      213: 1244789068667171687
+    second: sprBloodExplosion_strip011_34
+  - first:
+      213: 3062338387598674847
+    second: sprBloodExplosion_strip011_35
+  - first:
+      213: 5925695915080286582
+    second: sprBloodExplosion_strip011_36
+  - first:
+      213: 4201095483986645637
+    second: sprBloodExplosion_strip011_37
+  - first:
+      213: -2111664484427257843
+    second: sprBloodExplosion_strip011_38
+  - first:
+      213: -3540584272607665675
+    second: sprBloodExplosion_strip011_39
+  - first:
+      213: -9032161866667518464
+    second: sprBloodExplosion_strip011_40
+  - first:
+      213: 4587322994935577174
+    second: sprBloodExplosion_strip011_41
+  - first:
+      213: -3057605761920645465
+    second: sprBloodExplosion_strip011_42
+  - first:
+      213: -906318027450075802
+    second: sprBloodExplosion_strip011_43
+  - first:
+      213: -1384298125371741907
+    second: sprBloodExplosion_strip011_44
+  - first:
+      213: -2808834232018251947
+    second: sprBloodExplosion_strip011_45
+  - first:
+      213: -4483736198709100009
+    second: sprBloodExplosion_strip011_46
+  - first:
+      213: -2587265486719818776
+    second: sprBloodExplosion_strip011_47
+  - first:
+      213: 5302053830285405060
+    second: sprBloodExplosion_strip011_48
+  - first:
+      213: 4691991517465787705
+    second: sprBloodExplosion_strip011_49
+  - first:
+      213: 8971911830279973882
+    second: sprBloodExplosion_strip011_50
+  - first:
+      213: 1774210746836409292
+    second: sprBloodExplosion_strip011_51
+  - first:
+      213: 7444982807162089640
+    second: sprBloodExplosion_strip011_52
+  - first:
+      213: -134018022245014661
+    second: sprBloodExplosion_strip011_53
+  - first:
+      213: -317585404384114423
+    second: sprBloodExplosion_strip011_54
+  - first:
+      213: 6408089724875277590
+    second: sprBloodExplosion_strip011_55
+  - first:
+      213: 8330642891080039422
+    second: sprBloodExplosion_strip011_56
+  - first:
+      213: -8770954593889263564
+    second: sprBloodExplosion_strip011_57
+  - first:
+      213: 9186654540536748092
+    second: sprBloodExplosion_strip011_58
+  - first:
+      213: 4045408682185022908
+    second: sprBloodExplosion_strip011_59
+  - first:
+      213: -8762866277405876758
+    second: sprBloodExplosion_strip011_60
+  - first:
+      213: -2714568091545529338
+    second: sprBloodExplosion_strip011_61
+  - first:
+      213: -6775088740889502968
+    second: sprBloodExplosion_strip011_62
+  - first:
+      213: -7661938655544166156
+    second: sprBloodExplosion_strip011_63
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 60
+    crunchedCompression: 1
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: sprBloodExplosion_strip011_0
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 26
+        width: 124
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f29494788e103fb0800000000000000
+      internalID: -4670199242162924815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprBloodExplosion_strip011_1
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 24
+        width: 124
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92ff9faeb03dbd690800000000000000
+      internalID: -7576229899980374231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprBloodExplosion_strip011_2
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 21
+        width: 124
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04014a6344ef2fba0800000000000000
+      internalID: -6056498979931942848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprBloodExplosion_strip011_3
+      rect:
+        serializedVersion: 2
+        x: 462
+        y: 26
+        width: 124
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aea14eed6c85c18c0800000000000000
+      internalID: -4027246355609806102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprBloodExplosion_strip011_4
+      rect:
+        serializedVersion: 2
+        x: 615
+        y: 23
+        width: 124
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fbe3c7f7eafa6050800000000000000
+      internalID: 5794719744766766073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprBloodExplosion_strip011_5
+      rect:
+        serializedVersion: 2
+        x: 764
+        y: 23
+        width: 124
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b74273304441dd00800000000000000
+      internalID: 995652035157313462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprBloodExplosion_strip011_6
+      rect:
+        serializedVersion: 2
+        x: 1511
+        y: 147
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5803e08efb39663d0800000000000000
+      internalID: -3213718831640989563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprBloodExplosion_strip011_7
+      rect:
+        serializedVersion: 2
+        x: 903
+        y: 23
+        width: 124
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 737f66e8f55461780800000000000000
+      internalID: -8712700152388323529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprBloodExplosion_strip011_8
+      rect:
+        serializedVersion: 2
+        x: 1071
+        y: 23
+        width: 124
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 279bd7a2f5ec02310800000000000000
+      internalID: 1378328394105469298
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprBloodExplosion_strip011_9
+      rect:
+        serializedVersion: 2
+        x: 1221
+        y: 21
+        width: 124
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c2d4eb3339996ee0800000000000000
+      internalID: -1267313374800850238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprBloodExplosion_strip011_10
+      rect:
+        serializedVersion: 2
+        x: 1523
+        y: 22
+        width: 124
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85d7aa73011f4c130800000000000000
+      internalID: 3586256255249448280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprBloodExplosion_strip011_11
+      rect:
+        serializedVersion: 2
+        x: 1373
+        y: 24
+        width: 124
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6151053b94f17ab20800000000000000
+      internalID: 3145517266143024406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprBloodExplosion_strip011_12
+      rect:
+        serializedVersion: 2
+        x: 1505
+        y: 148
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e23a2522b73450320800000000000000
+      internalID: 2523497362346910510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: aa340261a1575ec4a8c44c29ce847e1c
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      sprBloodExplosion_strip011_0: -4670199242162924815
+      sprBloodExplosion_strip011_1: -7576229899980374231
+      sprBloodExplosion_strip011_10: 3586256255249448280
+      sprBloodExplosion_strip011_11: 3145517266143024406
+      sprBloodExplosion_strip011_12: 2523497362346910510
+      sprBloodExplosion_strip011_2: -6056498979931942848
+      sprBloodExplosion_strip011_3: -4027246355609806102
+      sprBloodExplosion_strip011_4: 5794719744766766073
+      sprBloodExplosion_strip011_5: 995652035157313462
+      sprBloodExplosion_strip011_6: -3213718831640989563
+      sprBloodExplosion_strip011_7: -8712700152388323529
+      sprBloodExplosion_strip011_8: 1378328394105469298
+      sprBloodExplosion_strip011_9: -1267313374800850238
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

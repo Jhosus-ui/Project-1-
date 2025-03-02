@@ -1,53 +1,109 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public float tiempoInicial = 60f; 
-    public float tiempoMinimoReloj = 5f; 
-    public float tiempoMaximoReloj = 15f; 
-    public TMP_Text textoReloj; 
+    // Configuración pública
+    public float tiempoInicial = 60f;
+    public float tiempoMinimoReloj = 5f, tiempoMaximoReloj = 15f;
+    public float limiteSuperiorTiempo = 90f, limiteInferiorTiempo = 30f;
+    public float intervaloMinimoGeneracion = 5f, intervaloMaximoGeneracion = 10f;
+    public TMP_Text textoReloj;
+    public TMP_Text textoOleada; // Texto permanente para mostrar "Round: X"
+    public TMP_Text textoOleadaTemporal; // Texto temporal para mostrar "Ronda X"
+    public GameObject relojPrefab;
+    public Transform[] puntosSpawn;
 
-    
-    private float tiempoRestante; 
-    private bool juegoActivo = true; 
-    private bool temporizadorIniciado = false; 
+    // Sonido cuando se aumenta el tiempo
+    public AudioClip timeAddedSound; // Sonido cuando se aumenta el tiempo
+    private AudioSource audioSource;
+
+    // Referencia al EnemySpawner
+    public EnemySpawner enemySpawner;
+
+    // Variables privadas
+    private float tiempoRestante;
+    private bool juegoActivo = true, temporizadorIniciado = false;
+    private int relojesActivos = 0;
+    private float tiempoUltimaGeneracion;
+    private float siguienteIntervaloGeneracion;
+
+    public static GameManager Instance;
+    private bool isTimeUp = false;
+
+    void Awake()
+    {
+        // Configurar el Singleton
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
-        tiempoRestante = tiempoInicial; 
-        ActualizarTextoReloj(); 
+        tiempoRestante = tiempoInicial;
+        ActualizarTextoReloj();
+        siguienteIntervaloGeneracion = Random.Range(intervaloMinimoGeneracion, intervaloMaximoGeneracion);
+
+        // Obtener el componente AudioSource
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
-        if (!temporizadorIniciado && (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0))
-        {
-            temporizadorIniciado = true; 
-        }
-
-        if (temporizadorIniciado && juegoActivo)
-        {
-            tiempoRestante -= Time.deltaTime; 
-            if (tiempoRestante <= 0)
-            {
-                tiempoRestante = 0;
-                juegoActivo = false;
-                Debug.Log("¡Tiempo agotado!"); 
-            }
-            ActualizarTextoReloj(); 
-        }
+        // Temporizador
+        if (!temporizadorIniciado && JugadorSeMueve()) IniciarTemporizador();
+        if (temporizadorIniciado && juegoActivo) ActualizarJuego();
     }
 
-    void ActualizarTextoReloj()
+    bool JugadorSeMueve() => Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0;
+
+    void IniciarTemporizador()
     {
-        if (textoReloj != null)
+        temporizadorIniciado = true;
+        tiempoUltimaGeneracion = Time.time;
+        GenerarReloj();
+    }
+
+    void ActualizarJuego()
+    {
+        tiempoRestante -= Time.deltaTime;
+        if (tiempoRestante <= 0) TerminarJuego();
+        ActualizarTextoReloj();
+        if (DebeGenerarReloj()) GenerarReloj();
+    }
+
+    bool DebeGenerarReloj() =>
+        relojesActivos < 2 &&
+        tiempoRestante > limiteInferiorTiempo &&
+        tiempoRestante < limiteSuperiorTiempo &&
+        Time.time - tiempoUltimaGeneracion >= siguienteIntervaloGeneracion;
+
+    void GenerarReloj()
+    {
+        if (relojPrefab != null && puntosSpawn.Length > 0)
         {
-            int minutos = Mathf.FloorToInt(tiempoRestante / 60);
-            int segundos = Mathf.FloorToInt(tiempoRestante % 60);
-            textoReloj.text = $"{minutos:00}:{segundos:00}"; 
+            Transform puntoSpawn = puntosSpawn[Random.Range(0, puntosSpawn.Length)];
+
+            // Verificar si la posición está ocupada antes de generar el reloj
+            if (!IsPositionOccupied(puntoSpawn.position))
+            {
+                Instantiate(relojPrefab, puntoSpawn.position, Quaternion.identity).GetComponent<Reloj>().gameManager = this;
+                relojesActivos++;
+                tiempoUltimaGeneracion = Time.time;
+                siguienteIntervaloGeneracion = Random.Range(intervaloMinimoGeneracion, intervaloMaximoGeneracion);
+            }
         }
     }
+
+    void ActualizarTextoReloj() =>
+        textoReloj.text = $"{Mathf.FloorToInt(tiempoRestante / 60):00}:{Mathf.FloorToInt(tiempoRestante % 60):00}";
 
     public void AumentarTiempo(float tiempoAñadido)
     {
@@ -55,8 +111,61 @@ public class GameManager : MonoBehaviour
         {
             tiempoRestante += tiempoAñadido;
             Debug.Log($"Tiempo añadido: {tiempoAñadido} segundos. Tiempo restante: {tiempoRestante}");
+            relojesActivos--;
+
+            // Reproducir sonido cuando se aumenta el tiempo
+            if (timeAddedSound != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(timeAddedSound);
+            }
         }
     }
 
-    public float ObtenerTiempoRelojAleatorio() => Random.Range(tiempoMinimoReloj, tiempoMaximoReloj);
+    public void MostrarTextoOleadaTemporal(string mensaje)
+    {
+        textoOleadaTemporal.text = mensaje;
+        Invoke("LimpiarTextoOleadaTemporal", 3f); // Limpiar el texto después de 3 segundos
+    }
+
+    void LimpiarTextoOleadaTemporal()
+    {
+        textoOleadaTemporal.text = "";
+    }
+
+    public void ActualizarTextoOleada(string mensaje)
+    {
+        textoOleada.text = mensaje;
+    }
+
+    void TerminarJuego()
+    {
+        tiempoRestante = 0;
+        juegoActivo = false;
+        isTimeUp = true;
+        Debug.Log("¡Tiempo agotado!");
+        SceneManager.LoadScene("Game Over");
+    }
+
+    public void PlayerDied()
+    {
+        Debug.Log("El jugador ha muerto.");
+        isTimeUp = false;
+        SceneManager.LoadScene("Game Over");
+    }
+
+    public bool IsTimeUp()
+    {
+        return isTimeUp;
+    }
+
+    public float ObtenerTiempoRelojAleatorio()
+    {
+        return Random.Range(tiempoMinimoReloj, tiempoMaximoReloj);
+    }
+
+    private bool IsPositionOccupied(Vector3 position)
+    {
+        Collider[] colliders = Physics.OverlapSphere(position, 2f); // Radio de 2 unidades
+        return colliders.Length > 0; // Si hay colisiones, la posición está ocupada
+    }
 }
